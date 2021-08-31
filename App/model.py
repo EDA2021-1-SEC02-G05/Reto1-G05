@@ -36,8 +36,57 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog():
+    """
+    Inicializa el catálogo de libros. Crea una lista vacia para guardar
+    todos los libros, adicionalmente, crea una lista vacia para los autores,
+    una lista vacia para los generos y una lista vacia para la asociación
+    generos y libros. Retorna el catalogo inicializado.
+    """
+    catalog = {'Artwork': None,
+               'Artist': None,
+               'Artist_ID': None,
+               'Artwork_ID':None,
+               'Tecnique': None,
+               'Nationality_artist':None,
+                }
+
+    catalog['Artwork'] = lt.newList()
+    catalog['Artist'] = lt.newList('ARRAY_LIST',
+                                    cmpfunction=compareArtist)
+    catalog['Artist_ID'] = lt.newList('SINGLE_LINKED',
+                                 cmpfunction=compareartist_ID)
+    catalog['Artwork_ID'] = lt.newList('SINGLE_LINKED',
+                                 cmpfunction=compareartwork_ID)
+    catalog['Tecnique'] = lt.newList('SINGLE_LINKED',
+                                 cmpfunction=comparetecnique)
+    catalog['Nationality_artist'] = lt.newList('SINGLE_LINKED',
+                                 cmpfunction=comparenationality_artist)
+    
+
+    return catalog
 
 # Funciones para agregar informacion al catalogo
+
+def addArtwork(catalog, artwork):
+
+    lt.addLast(catalog['Artwork'], artwork)
+
+
+
+def addArtist(catalog,artists):
+    
+    lt.addLast(catalog['Artist'], artists)
+
+    artist_ID = artists['ConstituentID'].split(',')
+
+    for date in artist_ID:
+        addArtist_ID()
+        
+
+def addArtistArtwork_ID(catalog, artists, artwork):
+
+
 
 # Funciones para creacion de datos
 
