@@ -37,7 +37,9 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Cargar ")
+    print("3- Cargar ")
+    print("4- Cargar ")
 
 catalog = None
 
@@ -53,6 +55,12 @@ while True:
     elif int(inputs[0]) == 2:
         pass
 
+    elif int(inputs[0]) == 3:
+        pass
+
+    elif int(inputs[0]) == 4:
+        pass
+    
     else:
         sys.exit(0)
 sys.exit(0)
