@@ -35,6 +35,7 @@ Se define la estructura de un catálogo de videos. El catálogo tendrá dos list
 los mismos.
 """
 
+
 # Construccion de modelos
 def newCatalog(list_type = 'ARRAY_LIST'):
     """
