@@ -1,5 +1,5 @@
-Estudiante_1 - Juliana Delgadillo Cheyne, 202020986, j.delgadillo@uniandes.edu.co
-Estudiante_2 - Maria Alejandra Moreno Bustillo, 202021603, m.morenob@uniandes.edu.co
+Req. 2 - Juliana Delgadillo Cheyne, 202020986, j.delgadillo@uniandes.edu.co
+Req. 3 - Maria Alejandra Moreno Bustillo, 202021603, m.morenob@uniandes.edu.co
 
 #ISIS1225 - Librerias de soporte
 
