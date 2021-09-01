@@ -76,6 +76,7 @@ while True:
 
     elif int(inputs[0]) == 7:
         pass
+    
 
     else:
         sys.exit(0)
