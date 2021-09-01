@@ -71,11 +71,11 @@ while True:
         loadData(catalog)
         print('Obras de arte cargados: ' + str(lt.size(catalog['Artwork'])))
         print('Artistas cargados: ' + str(lt.size(catalog['Artist'])))
-        #print('Últimas tres obras de arte cargadas:' + str(catalog['Artwork']["elements"][-3:]))
+        print('Últimas tres obras de arte cargadas:' + str(catalog['Artwork']["elements"][-3:]))
         print("-----------------------------------------------------------------------------------")
         print('Últimos tres artistas cargados:' + str(catalog['Artist']["elements"][-3:]))
-
-        print(catalog['Artwork'])
+        #print(catalog["Artist"])
+        #print(catalog['Artwork'])
 
 
 
@@ -99,7 +99,7 @@ while True:
 
     elif int(inputs[0]) == 7:
         pass
-    
+
 
     else:
         sys.exit(0)

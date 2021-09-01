@@ -51,7 +51,7 @@ def newCatalog():
                'Nationality_artist':None,
                 }
 
-    catalog['Artwork'] = lt.newList()
+    catalog['Artwork'] = lt.newList("ARRAY_LIST")
     catalog['Artist'] = lt.newList('ARRAY_LIST',
                                     cmpfunction=cmpartist)
     catalog['Artist_ID'] = lt.newList('SINGLE_LINKED',
