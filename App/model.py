@@ -53,15 +53,15 @@ def newCatalog():
 
     catalog['Artwork'] = lt.newList()
     catalog['Artist'] = lt.newList('ARRAY_LIST',
-                                    cmpfunction=compareArtist)
+                                    cmpfunction=cmpartist)
     catalog['Artist_ID'] = lt.newList('SINGLE_LINKED',
-                                 cmpfunction=compareartist_ID)
+                                 cmpfunction=cmpartist_ID)
     catalog['Artwork_ID'] = lt.newList('SINGLE_LINKED',
-                                 cmpfunction=compareartwork_ID)
+                                 cmpfunction=cmpartwork_ID)
     catalog['Tecnique'] = lt.newList('SINGLE_LINKED',
-                                 cmpfunction=comparetecnique)
+                                 cmpfunction=cmptecnique)
     catalog['Nationality_artist'] = lt.newList('SINGLE_LINKED',
-                                 cmpfunction=comparenationality_artist)
+                                 cmpfunction=cmpnationality_artist)
     
 
     return catalog
@@ -70,21 +70,21 @@ def newCatalog():
 
 def addArtwork(catalog, artwork):
 
+    #artwork = addArtworkArtist(catalog, artwork[''])
+
     lt.addLast(catalog['Artwork'], artwork)
 
 
+def addArtworkArtist(catalog, artwork):
+    pass
 
 def addArtist(catalog,artists):
     
-    lt.addLast(catalog['Artist'], artists)
-
-    artist_ID = artists['ConstituentID'].split(',')
-
-    for date in artist_ID:
-        addArtist_ID()
+    lt.addLast(catalog['Artist'], artists)   
         
 
-def addArtistArtwork_ID(catalog, artists, artwork):
+def addArtist_ID(catalog, artists):
+    pass
 
 
 
@@ -93,5 +93,20 @@ def addArtistArtwork_ID(catalog, artists, artwork):
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+def cmpartist():
+    pass
+
+def cmpartist_ID():
+    pass
+
+def cmpartwork_ID():
+    pass
+
+def cmptecnique():
+    pass
+
+def cmpnationality_artist():
+    pass
 
 # Funciones de ordenamiento

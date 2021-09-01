@@ -45,7 +45,6 @@ def loadData(catalog):
     """
     loadArtworks(catalog)
     loadArtists(catalog)
-    sortArtists(catalog)
 
 def loadArtworks(catalog):
 
