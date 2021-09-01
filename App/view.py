@@ -72,10 +72,12 @@ while True:
         print('Obras de arte cargados: ' + str(lt.size(catalog['Artwork'])))
         print('Artistas cargados: ' + str(lt.size(catalog['Artist'])))
         print('Últimas tres obras de arte cargadas:' + str(catalog['Artwork']["elements"][-3:]))
+        print("")
         print("-----------------------------------------------------------------------------------")
+        print("")
         print('Últimos tres artistas cargados:' + str(catalog['Artist']["elements"][-3:]))
-        #print(catalog["Artist"])
-        #print(catalog['Artwork'])
+
+
 
 
 

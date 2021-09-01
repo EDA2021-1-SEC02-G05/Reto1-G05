@@ -36,7 +36,7 @@ los mismos.
 """
 
 # Construccion de modelos
-def newCatalog():
+def newCatalog(list_type = 'ARRAY_LIST'):
     """
     Inicializa el catálogo de libros. Crea una lista vacia para guardar
     todos los libros, adicionalmente, crea una lista vacia para los autores,
@@ -51,16 +51,16 @@ def newCatalog():
                'Nationality_artist':None,
                 }
 
-    catalog['Artwork'] = lt.newList("ARRAY_LIST")
-    catalog['Artist'] = lt.newList('ARRAY_LIST',
+    catalog['Artwork'] = lt.newList(list_type)
+    catalog['Artist'] = lt.newList(list_type,
                                     cmpfunction=cmpartist)
-    catalog['Artist_ID'] = lt.newList('SINGLE_LINKED',
+    catalog['Artist_ID'] = lt.newList(list_type,
                                  cmpfunction=cmpartist_ID)
-    catalog['Artwork_ID'] = lt.newList('SINGLE_LINKED',
+    catalog['Artwork_ID'] = lt.newList(list_type,
                                  cmpfunction=cmpartwork_ID)
-    catalog['Tecnique'] = lt.newList('SINGLE_LINKED',
+    catalog['Tecnique'] = lt.newList(list_type,
                                  cmpfunction=cmptecnique)
-    catalog['Nationality_artist'] = lt.newList('SINGLE_LINKED',
+    catalog['Nationality_artist'] = lt.newList(list_type,
                                  cmpfunction=cmpnationality_artist)
     
 
