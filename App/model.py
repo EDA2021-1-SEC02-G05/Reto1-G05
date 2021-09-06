@@ -71,18 +71,30 @@ def newCatalog(list_type = 'ARRAY_LIST'):
 
 def addArtwork(catalog, artwork):
 
-    #artwork = addArtworkArtist(catalog, artwork[''])
+    list_artwork = {'ObjectID':artwork['ObjectID'], 'Title':artwork['Title'], 'ConstituentID':artwork['ConstituentID'], 'Date': artwork[ 'Date'],
+     'Medium':artwork['Medium'], 'Dimensions':artwork['Dimensions'],'CreditLine': artwork['CreditLine'], 'Department':artwork['Department'] }
 
-    lt.addLast(catalog['Artwork'], artwork)
+    lt.addLast(catalog['Artwork'], list_artwork)
+    
+    artist_id = artwork['ConstituentID'].split(',')
 
+    for artist in artist_id:
+        addArtworkArtist(catalog, artist.strip(), artwork)
 
 def addArtworkArtist(catalog, artwork):
     pass
 
 def addArtist(catalog,artists):
+    list_artist = {'ConstituentID':artists['ConstituentID'], 'DisplayName': artists['DisplayName'], 'Nationality':artists['Nationality'],
+    'Gender':artists['Gender'], 'BeginDate':artists['BeginDate'], 'EndDate':artists['EndDate']}
     
-    lt.addLast(catalog['Artist'], artists)   
+    lt.addLast(catalog['Artist'], list_artist)   
         
+def addArtworkArtist(catalog, artist_id, artwork):
+  
+  
+    pass
+
 
 def addArtist_ID(catalog, artists):
     pass
