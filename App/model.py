@@ -46,24 +46,20 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     """
     catalog = {'Artwork': None,
                'Artist': None,
-               'Artist_ID': None,
+               'Artist_ID_Nationality': None,
                'Artwork_ID':None,
+               'ArtworkArtist': None,
                'Tecnique': None,
-               'Nationality_artist':None,
                 }
 
     catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
                                     cmpfunction=cmpartist)
-    catalog['Artist_ID'] = lt.newList(list_type,
-                                 cmpfunction=cmpartist_ID)
-    catalog['Artwork_ID'] = lt.newList(list_type,
-                                 cmpfunction=cmpartwork_ID)
+    catalog['ArtworkArtist'] = lt.newList(list_type,
+                                 cmpfunction=cmpartwork_artist)
     catalog['Tecnique'] = lt.newList(list_type,
                                  cmpfunction=cmptecnique)
-    catalog['Nationality_artist'] = lt.newList(list_type,
-                                 cmpfunction=cmpnationality_artist)
-    
+
 
     return catalog
 
@@ -81,8 +77,6 @@ def addArtwork(catalog, artwork):
     for artist in artist_id:
         addArtworkArtist(catalog, artist.strip(), artwork)
 
-def addArtworkArtist(catalog, artwork):
-    pass
 
 def addArtist(catalog,artists):
     list_artist = {'ConstituentID':artists['ConstituentID'], 'DisplayName': artists['DisplayName'], 'Nationality':artists['Nationality'],
@@ -103,6 +97,17 @@ def addArtist_ID(catalog, artists):
 
 # Funciones para creacion de datos
 
+def newArtist(name, ID):
+
+    artist = {'name':'','Constituent_ID':0,'Artworks':None,'Date':0}
+    artist['name'] = name
+    artist['Constituent_ID'] = ID
+    artist['Artworks'] = lt.newList('ARRAY_LIST')
+
+    return artist
+
+
+
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -119,7 +124,7 @@ def cmpartwork_ID():
 def cmptecnique():
     pass
 
-def cmpnationality_artist():
+def cmpartwork_artist():
     pass
 
 # Funciones de ordenamiento

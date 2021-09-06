@@ -42,17 +42,17 @@ def printMenu():
     print("4- Clasificar las obras de una artista por técnica")
     print("5- Clasificar las obras por nacionalidad de sus creadores")
     print("6- Transportar obras de un departamento")
-    print("7- Nuevo esposición en el museo")
+    print("7- Nuevo exposición en el museo")
 
 def initCatalog():
     """
-    Inicializa el catalogo de libros
+    Inicializa el catalogo de obras
     """
     return controller.initCatalog()
 
 def loadData(catalog):
     """
-    Carga los libros en la estructura de datos
+    Carga las obras y los artistas en la estructura de datos
     """
     controller.loadData(catalog)
     
@@ -76,13 +76,6 @@ while True:
         print("-----------------------------------------------------------------------------------")
         print("")
         print('Últimos tres artistas cargados:' + str(catalog['Artist']["elements"][-3:]))
-
-
-
-
-
-
-
 
     elif int(inputs[0]) == 2:
         pass
