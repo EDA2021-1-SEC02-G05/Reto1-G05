@@ -71,28 +71,22 @@ def addArtwork(catalog, artwork):
      'Medium':artwork['Medium'], 'Dimensions':artwork['Dimensions'],'CreditLine': artwork['CreditLine'], 'Department':artwork['Department'] }
 
     lt.addLast(catalog['Artwork'], list_artwork)
+    
+    artist_id = artwork['ConstituentID'].split(',')
 
-    #artist_id = artwork['ConstituentID'].split(',')
-
-        #for artist in artist_id:
-        #addArtworkArtist(catalog, artist.strip(), artwork)
+    for artist in artist_id:
+        addArtworkArtist(catalog, artist.strip(), artwork)
 
 
 def addArtist(catalog,artists):
     list_artist = {'ConstituentID':artists['ConstituentID'], 'DisplayName': artists['DisplayName'], 'Nationality':artists['Nationality'],
     'Gender':artists['Gender'], 'BeginDate':artists['BeginDate'], 'EndDate':artists['EndDate']}
+    
     lt.addLast(catalog['Artist'], list_artist)   
         
-#def addArtworkArtist(catalog, artist_id, artwork):
-  #  artists = catalog['ArtworkArtist']
-   
-   # posauthor = lt.isPresent(artists,artist_id)
-   # if posauthor > 0:
-    #    artist = lt.getElement(artists, posauthor)
-    #else: 
-     #   artist = newArtist(artist_id)
-      #  lt.addLast(artists,artist)
-    #lt.addLast(artist['Artwork'],artwork)
+def addArtworkArtist(catalog, artist_id, artwork):
+  
+  
     pass
 
 
