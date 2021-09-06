@@ -65,6 +65,7 @@ def newCatalog(list_type = 'ARRAY_LIST'):
 
 # Funciones para agregar informacion al catalogo
 
+
 def addArtwork(catalog, artwork):
 
     list_artwork = {'ObjectID':artwork['ObjectID'], 'Title':artwork['Title'], 'ConstituentID':artwork['ConstituentID'], 'Date': artwork[ 'Date'],
