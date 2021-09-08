@@ -46,19 +46,17 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     """
     catalog = {'Artwork': None,
                'Artist': None,
-               'Artist_ID_Nationality': None,
-               'Artwork_ID':None,
                'ArtworkArtist': None,
-               'Tecnique': None,
+               'ArtistDate':None,
                 }
 
     catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
-                                    cmpfunction=cmpartist)
+                                    cmpfunction="")
     catalog['ArtworkArtist'] = lt.newList(list_type,
-                                 cmpfunction=cmpartwork_artist)
-    catalog['Tecnique'] = lt.newList(list_type,
-                                 cmpfunction=cmptecnique)
+                                 cmpfunction="")
+    catalog['ArtistDate'] = lt.newList(list_type,
+                                 cmpfunction="")
 
 
     return catalog
@@ -69,63 +67,89 @@ def newCatalog(list_type = 'ARRAY_LIST'):
 def addArtwork(catalog, artwork):
 
     list_artwork = {'ObjectID':artwork['ObjectID'], 'Title':artwork['Title'], 'ConstituentID':artwork['ConstituentID'], 'Date': artwork[ 'Date'],
-     'Medium':artwork['Medium'], 'Dimensions':artwork['Dimensions'],'CreditLine': artwork['CreditLine'], 'Department':artwork['Department'] }
+     'Medium':artwork['Medium'], 'Dimensions':artwork['Dimensions'],'CreditLine': artwork['CreditLine'], 'Department':artwork['Department'], 'DateAcquired':artwork['DateAcquired']  }
 
     lt.addLast(catalog['Artwork'], list_artwork)
     
     artist_id = artwork['ConstituentID'].split(',')
 
-    for artist in artist_id:
-        addArtworkArtist(catalog, artist.strip(), artwork)
+    #for artist in artist_id:
+        #addArtworkArtist(catalog, artist.strip(), artwork)
 
 
 def addArtist(catalog,artists):
     list_artist = {'ConstituentID':artists['ConstituentID'], 'DisplayName': artists['DisplayName'], 'Nationality':artists['Nationality'],
     'Gender':artists['Gender'], 'BeginDate':artists['BeginDate'], 'EndDate':artists['EndDate']}
     
-    lt.addLast(catalog['Artist'], list_artist)   
+    addArtistDate(catalog, list_artist['DisplayName'], list_artist['BeginDate'],list_artist['EndDate'],list_artist['Nationality'],list_artist['Gender'])
+
+
+    lt.addLast(catalog['Artist'], list_artist)  
+    
+    
+
+
         
-def addArtworkArtist(catalog, artist_id, artwork):
-  
-  
-    pass
+#def addArtworkArtist(catalog, artist_id, artwork):
+   # artists = catalog['ArtworkArtist']
+    #posartist = lt.isPresent(artists, artist_id)
+    #if posartist > 0:
+    #    artist = lt.getElement(artists, posartist)
+   # else:
+     #   artist = newArtist(artist_id)
+    #  lt.addLast(artists, artist)
+    #lt.addLast(artist['ArtworkArtist'], artwork)
 
 
-def addArtist_ID(catalog, artists):
-    pass
+def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
+    
+    if int(date) != 0 :
+        adate = newArtistDate(artist,date, deathdate, nationality, gender )
 
-
+        lt.addLast(catalog['ArtistDate'],adate)
+    
 
 # Funciones para creacion de datos
 
-def newArtist(name, ID):
+def newArtist(name):
 
-    artist = {'name':'','Constituent_ID':0,'Artworks':None,'Date':0}
-    artist['name'] = name
-    artist['Constituent_ID'] = ID
+    artist = {'Artist_ID':'','Artworks':None,}
+    artist['Artist_ID'] = name
     artist['Artworks'] = lt.newList('ARRAY_LIST')
 
     return artist
 
+def newArtistDate(artist, date, deathdate, nationality, gender):
+    artist_date = {'name': '', 'BeginDate':'', 'EndDate':'', 'nationality':'','gender':''}
+    artist_date['name'] = artist
+    artist_date['BeginDate'] = date
+    artist_date['EndDate'] = deathdate
+    artist_date['nationality'] = nationality
+    artist_date['gender'] = gender
 
+    return artist_date
 
 # Funciones de consulta
+def getArtistYear(catalog,año_inicial,año_final):
+
+    artist_inrange = lt.newList()
+
+    for artist in lt.iterator(catalog['ArtistDate']):
+
+        if int(artist['BeginDate']) >= año_inicial and int(artist['BeginDate']) <= año_final:
+        
+            lt.addLast(artist_inrange, artist )
+    
+    return artist_inrange
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
-def cmpartist():
-    pass
+def cmpartistyear(artist1,artist2):
 
-def cmpartist_ID():
-    pass
-
-def cmpartwork_ID():
-    pass
-
-def cmptecnique():
-    pass
-
-def cmpartwork_artist():
-    pass
+    return int(artist1['date']) > int(artist2['date'])
 
 # Funciones de ordenamiento
+
+def sortYear(catalog):
+
+    sa.sort(catalog['ArtistDate'], cmpartistyear)

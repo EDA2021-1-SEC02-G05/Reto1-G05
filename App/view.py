@@ -55,6 +55,19 @@ def loadData(catalog):
     Carga las obras y los artistas en la estructura de datos
     """
     controller.loadData(catalog)
+
+def printArtistDate(artists, año_inicial, año_final):
+    tamaño = lt.size(artists)
+
+    if tamaño > 0 :
+
+        print ('Se encontraron ' + str(tamaño) + ' artistas nacidos en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final))
+        print('Los primeros 3 artistas encontrados en el rango son: ' + str(catalog['ArtistDate']['elements'][0:3]))
+        print ('Los últimos 3 artistas encontrados en el rango son: ' + str(catalog['ArtistDate']['elements'][-3:]))
+    else:
+        print('No se encontraron artistas nacidos en este rango de años')
+        
+
     
 
 catalog = None
@@ -78,7 +91,10 @@ while True:
         print('Últimos tres artistas cargados:' + str(catalog['Artist']["elements"][-3:]))
 
     elif int(inputs[0]) == 2:
-        pass
+        año_inicial = int(input('Año inicial para el rango de busqueda: '))
+        año_final = int(input ('Año final para el rango de busqueda: '))
+        artist = controller.getArtistYear(catalog, año_inicial, año_final)
+        printArtistDate(artist, año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
         pass

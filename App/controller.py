@@ -64,3 +64,8 @@ def loadArtists(catalog):
 
 
 # Funciones de consulta sobre el catálogo
+
+def getArtistYear(catalog,año_inicial, año_final):
+
+    artist = model.getArtistYear(catalog, año_inicial, año_final)
+    return artist
