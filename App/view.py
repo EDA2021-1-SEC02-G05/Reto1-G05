@@ -57,13 +57,25 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 def printArtistDate(artists, año_inicial, año_final):
-    tamaño = lt.size(artists)
+    tamano = lt.size(artists)
 
-    if tamaño > 0 :
+    
+    
+    first_3_artists = lt.subList(artists, 1, 3 )
+    last_3_artists = lt.subList(artists, tamano - 3, 3)
 
-        print ('Se encontraron ' + str(tamaño) + ' artistas nacidos en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final))
-        print('Los primeros 3 artistas encontrados en el rango son: ' + str(catalog['ArtistDate']['elements'][0:3]))
-        print ('Los últimos 3 artistas encontrados en el rango son: ' + str(catalog['ArtistDate']['elements'][-3:]))
+    if tamano > 0 :
+
+        print ('Se encontraron ' + str(tamano) + ' artistas nacidos en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
+
+        print('Los primeros 3 artistas encontrados en el rango son: ')
+        for artist in lt.iterator(first_3_artists):
+            print("Nombre: " + artist["name"] + ", Año de nacimiento: " + artist["BeginDate"] + ", Año de muerte: " + artist["EndDate"] + ", Nacionalidad: "+ artist["nationality"] + ", Género: " + artist["gender"])
+            
+
+        print('\nLos últimos 3 artistas encontrados en el rango son: ')
+        for artist in lt.iterator(last_3_artists):
+            print("Nombre: " + artist["name"] + ", Año de nacimiento: " + artist["BeginDate"] + ", Año de muerte: " + artist["EndDate"] + ", Nacionalidad: "+ artist["nationality"] + ", Género: " + artist["gender"])
     else:
         print('No se encontraron artistas nacidos en este rango de años')
         

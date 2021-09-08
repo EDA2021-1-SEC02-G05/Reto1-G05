@@ -78,7 +78,7 @@ def addArtwork(catalog, artwork):
                     'DateAcquired':artwork['DateAcquired']}
 
     lt.addLast(catalog['Artwork'], list_artwork)
-    
+    'agregar listas para ordenar'
     artist_id = artwork['ConstituentID'].split(',')
 
     for artist in artist_id:
@@ -130,7 +130,7 @@ def newArtistDate(artist, date, deathdate, nationality, gender):
 # Funciones de consulta
 def getArtistYear(catalog,año_inicial,año_final):
 
-    sortYear(catalog)
+    
 
     artist_inrange = lt.newList("ARRAY_LIST")
 
@@ -140,6 +140,7 @@ def getArtistYear(catalog,año_inicial,año_final):
         
             lt.addLast(artist_inrange, artist )
 
+    sortYear(artist_inrange)
     return artist_inrange
 
 # Funciones utilizadas para comparar elementos dentro de una lista
