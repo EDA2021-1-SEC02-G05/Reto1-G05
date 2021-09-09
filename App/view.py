@@ -89,16 +89,29 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+        print("Cargando información de los archivos ....\n")
         catalog = initCatalog()
         loadData(catalog)
-        print('Obras de arte cargados: ' + str(lt.size(catalog['Artwork'])))
-        print('Artistas cargados: ' + str(lt.size(catalog['Artist'])))
-        print('Últimas tres obras de arte cargadas:' + str(catalog['Artwork']["elements"][-3:]))
+        tamano_artwork = lt.size(catalog['Artwork'])
+        tamano_artist = lt.size(catalog['Artist'])
+        
+        last_3_artworks = lt.subList(catalog['Artwork'], tamano_artwork - 3, 3 )
+        last_3_artists = lt.subList(catalog['Artist'], tamano_artist - 3, 3)
+
+        print('Obras de arte cargadas: ' + str(tamano_artwork)+'\n')
+        print('Artistas cargados: ' + str(tamano_artist)+ '\n')
+        print('Últimas tres obras de arte cargadas:')
+
+        for artwork in lt.iterator(last_3_artworks):
+            print(artwork)
+
         print("")
         print("-----------------------------------------------------------------------------------")
         print("")
-        print('Últimos tres artistas cargados:' + str(catalog['Artist']["elements"][-3:]))
+        print('Últimos tres artistas cargados:')
+        
+        for artist in lt.iterator(last_3_artists):
+            print(artist )
 
     elif int(inputs[0]) == 2:
         año_inicial = int(input('Año inicial para el rango de busqueda: '))

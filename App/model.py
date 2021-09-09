@@ -50,7 +50,7 @@ def newCatalog(list_type = 'ARRAY_LIST'):
 
     catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
-                                    cmpfunction="")
+                                    cmpfunction=cmpartistID)
     catalog['ArtistDate'] = lt.newList(list_type,
                                  cmpfunction="")
 
@@ -88,11 +88,8 @@ def addArtwork(catalog, artwork):
     'agregar listas para ordenar'
     artist_id = artwork['ConstituentID'].split(',')
     for artist in artist_id:
-        addArtworkArtist(catalog, artist[1:-1], artwork)
+        addArtworkArtist(catalog, artist, artwork)
 
-
-
-    
 
 def addArtworkArtist(catalog, artist_id, artwork):
     artists = catalog['Artist']
@@ -133,7 +130,7 @@ def getArtistYear(catalog,año_inicial,año_final):
 
         if int(artist['BeginDate']) >= año_inicial and int(artist['BeginDate']) <= año_final:
         
-            lt.addLast(artist_inrange, artist )
+            lt.addLast(artist_inrange, artist)
 
     sortYear(artist_inrange)
     return artist_inrange
@@ -146,6 +143,13 @@ def getArtistTecnique(catalog,name):
 def cmpartistyear(artist1,artist2):
 
     return int(artist1['BeginDate']) < int(artist2['BeginDate'])
+
+def cmpartistID(artistid1,artist):
+    if (artist['ConstituentID'] in artistid1['ConstituentID'] ):
+        return 0
+    else:
+        return -1
+
 
 # Funciones de ordenamiento
 
