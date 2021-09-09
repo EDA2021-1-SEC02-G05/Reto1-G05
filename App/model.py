@@ -76,7 +76,7 @@ def addArtwork(catalog, artwork):
 
     artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':artwork['Title'], 
-                    'ConstituentID':artwork['ConstituentID'], 
+                    'ConstituentID':artwork['ConstituentID'][1:-1], 
                     'Date': artwork[ 'Date'],
                     'Medium':artwork['Medium'], 
                     'Dimensions':artwork['Dimensions'],
@@ -94,10 +94,10 @@ def addArtwork(catalog, artwork):
 def addArtworkArtist(catalog, artist_id, artwork):
     artists = catalog['Artist']
     posartist = lt.isPresent(artists, artist_id)
+
     if posartist > 0:
-        print('hola')
         artist = lt.getElement(artists, posartist)
-        lt.addLast(artist['Artworks']['elements'], artwork)
+        lt.addLast(artist['Artworks'], artwork)
     
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
@@ -136,6 +136,13 @@ def getArtistYear(catalog,año_inicial,año_final):
     return artist_inrange
 
 def getArtistTecnique(catalog,name):
+
+    for artists in catalog['Artist']:
+        
+     
+     artworks = catalog['Artist'][]
+
+
     pass
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -145,7 +152,7 @@ def cmpartistyear(artist1,artist2):
     return int(artist1['BeginDate']) < int(artist2['BeginDate'])
 
 def cmpartistID(artistid1,artist):
-    if (artist['ConstituentID'] in artistid1['ConstituentID'] ):
+    if (artistid1 in artist['ConstituentID']):
         return 0
     else:
         return -1

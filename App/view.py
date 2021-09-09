@@ -63,7 +63,7 @@ def printArtistDate(artists, año_inicial, año_final):
     last_3_artists = lt.subList(artists, tamano - 3, 3)
 
     if tamano > 0 :
-
+        
         print ('Se encontraron ' + str(tamano) + ' artistas nacidos en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
 
         print('Los primeros 3 artistas encontrados en el rango son: ')
@@ -92,9 +92,11 @@ while True:
         print("Cargando información de los archivos ....\n")
         catalog = initCatalog()
         loadData(catalog)
+
+
         tamano_artwork = lt.size(catalog['Artwork'])
         tamano_artist = lt.size(catalog['Artist'])
-        
+
         last_3_artworks = lt.subList(catalog['Artwork'], tamano_artwork - 3, 3 )
         last_3_artists = lt.subList(catalog['Artist'], tamano_artist - 3, 3)
 
