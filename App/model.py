@@ -52,8 +52,6 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
                                     cmpfunction="")
-    catalog['ArtworkArtist'] = lt.newList(list_type,
-                                 cmpfunction="")
     catalog['ArtistDate'] = lt.newList(list_type,
                                  cmpfunction="")
 
@@ -92,7 +90,7 @@ def addArtist(catalog,artists):
                     'Gender':artists['Gender'],
                     'BeginDate':artists['BeginDate'],
                     'EndDate':artists['EndDate'],
-                    'Artworks':lt.newList()}
+                    'Artworks':lt.newList('ARRAY_LIST')}
                     
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
     
@@ -104,7 +102,7 @@ def addArtworkArtist(catalog, artist_id, artwork):
     posartist = lt.isPresent(artists, artist_id)
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
-    lt.addLast(artist['Artworks'], artwork)
+        lt.addLast(artist['Artworks'], artwork)
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
     
@@ -151,6 +149,6 @@ def cmpartistyear(artist1,artist2):
 
 # Funciones de ordenamiento
 
-def sortYear(catalog):
+def sortYear(artist_inrange):
 
-    sa.sort(catalog['ArtistDate'], cmpartistyear)
+    sa.sort(artist_inrange, cmpartistyear)
