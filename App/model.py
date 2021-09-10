@@ -140,8 +140,26 @@ def getArtistYear(catalog,año_inicial,año_final):
 
     sortYear(artist_inrange)
     return artist_inrange
+####
+def getArtworkYear(catalog,año_inicial,año_final):
+
+    artwork_inrange = lt.newList("ARRAY_LIST")
+
+    for artwork in lt.iterator(catalog['Date']):
+
+        if int(artwork['Date']) >= año_inicial and int(artwork['Date']) <= año_final:
+        
+            lt.addLast(artwork_inrange, artwork )
+
+    sortYear(artwork_inrange)
+    return artwork_inrange
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+def cmpartistyear2(artist1,artist2):
+
+    return int(artwork['Date']) < int(artwork['Date'])
+
 
 def cmpartistyear(artist1,artist2):
 
@@ -152,3 +170,9 @@ def cmpartistyear(artist1,artist2):
 def sortYear(artist_inrange):
 
     sa.sort(artist_inrange, cmpartistyear)
+
+def sortYear(artwork_inrange):
+
+    sa.sort(artwork_inrange, cmpartistyear2)
+
+#quiero cambiar estos nombres
