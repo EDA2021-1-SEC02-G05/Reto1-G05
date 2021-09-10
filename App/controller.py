@@ -73,3 +73,8 @@ def getArtistYear(catalog,año_inicial, año_final):
 
     artist = model.getArtistYear(catalog, año_inicial, año_final)
     return artist
+
+def getArtworkYear(catalog,año_inicial, año_final):
+
+    artwork = model.getArtworkYear(catalog, año_inicial, año_final)
+    return artwork
