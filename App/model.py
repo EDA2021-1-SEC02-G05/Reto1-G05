@@ -121,6 +121,7 @@ def newArtistDate(artist, date, deathdate, nationality, gender):
 
     return artist_date
 
+
 # Funciones de consulta
 def getArtistYear(catalog,año_inicial,año_final):
 
@@ -136,15 +137,26 @@ def getArtistYear(catalog,año_inicial,año_final):
     return artist_inrange
 
 def getArtistTecnique(catalog,name):
+    tecniques = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
+    
+    for artist in lt.iterator(catalog['Artist']):
 
-    for artists in catalog['Artist']:
-        
-     
-     artworks = catalog['Artist'][]
+        if artist['DisplayName'].lower() == name.lower():
 
+            for artwork in lt.iterator(artist['Artworks']):
+                tecnique = artwork['Medium']
+                postechnique = lt.isPresent(tecniques, tecnique)
+                
+                if postechnique > 0:
+                    tec = lt.getElement(tecnique,postechnique)
+                    lt.addLast(tecniques[tec], artwork)
+                else:
+                    tec = {tecnique: lt.newList('ARRAY_LIST')}
 
-    pass
-
+                    lt.addLast(tec, artwork)
+                    lt.addLast(tecniques,tec)
+        break
+                
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def cmpartistyear(artist1,artist2):
@@ -154,6 +166,13 @@ def cmpartistyear(artist1,artist2):
 def cmpartistID(artistid1,artist):
     if (artistid1 in artist['ConstituentID']):
         return 0
+    else:
+        return -1
+
+def cmpArtistTecnique(tecnique1, artwork):
+
+    if (tecnique1.lower() in artwork['Medium'].lower()):
+        return 0 
     else:
         return -1
 
