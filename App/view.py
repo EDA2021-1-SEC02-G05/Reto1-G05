@@ -132,13 +132,17 @@ while True:
         printArtistDate(artist, año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
+    
+        año_inicial = (input('Año inicial para el rango de busqueda: '))
+        año_final = (input ('Año final para el rango de busqueda: '))
+        artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
+        printArtistDate(artist, año_inicial, año_final )
+
+    elif int(inputs[0]) == 4:
+        
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
         printArtistTecnique(catalog, tecniques, name)
-        
-
-    elif int(inputs[0]) == 4:
-        pass
 
     elif int(inputs[0]) == 5:
         pass
