@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from App.controller import getArtistTecnique
 import config as cf
 import sys
 import controller
@@ -37,8 +38,8 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Listar cornológicamente los artistas")
-    print("3- Listar cornológicamente las adquisiciones")
+    print("2- Listar cronológicamente los artistas")
+    print("3- Listar cronológicamente las adquisiciones")
     print("4- Clasificar las obras de una artista por técnica")
     print("5- Clasificar las obras por nacionalidad de sus creadores")
     print("6- Transportar obras de un departamento")
@@ -63,7 +64,7 @@ def printArtistDate(artists, año_inicial, año_final):
     last_3_artists = lt.subList(artists, tamano - 3, 3)
 
     if tamano > 0 :
-
+        
         print ('Se encontraron ' + str(tamano) + ' artistas nacidos en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
 
         print('Los primeros 3 artistas encontrados en el rango son: ')
@@ -76,12 +77,21 @@ def printArtistDate(artists, año_inicial, año_final):
             print("Nombre: " + artist["name"] + ", Año de nacimiento: " + artist["BeginDate"] + ", Año de muerte: " + artist["EndDate"] + ", Nacionalidad: "+ artist["nationality"] + ", Género: " + artist["gender"])
     else:
         print('No se encontraron artistas nacidos en este rango de años')
-        
-
-    
 
 catalog = None
 
+def printArtistTecnique(catalog,tecnique, name):
+    tamano = lt.size(catalog['Artist']['Artworks'])
+    print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
+    tamano_tecnicas = lt.size(tecnique)
+    print('El total de medios utilizados por el artista es: '+str(tamano_tecnicas))
+
+    for artwork in lt.iterator(tecnique):
+        mayor = None
+        if lt.size(artwork) > lt.size(mayor):
+            mayor = artwork
+    
+    print('')
 """
 Menu principal
 """
@@ -89,16 +99,31 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+        print("Cargando información de los archivos ....\n")
         catalog = initCatalog()
         loadData(catalog)
-        print('Obras de arte cargados: ' + str(lt.size(catalog['Artwork'])))
-        print('Artistas cargados: ' + str(lt.size(catalog['Artist'])))
-        print('Últimas tres obras de arte cargadas:' + str(catalog['Artwork']["elements"][-3:]))
+
+
+        tamano_artwork = lt.size(catalog['Artwork'])
+        tamano_artist = lt.size(catalog['Artist'])
+
+        last_3_artworks = lt.subList(catalog['Artwork'], tamano_artwork - 3, 3 )
+        last_3_artists = lt.subList(catalog['Artist'], tamano_artist - 3, 3)
+
+        print('Obras de arte cargadas: ' + str(tamano_artwork)+'\n')
+        print('Artistas cargados: ' + str(tamano_artist)+ '\n')
+        print('Últimas tres obras de arte cargadas:')
+
+        for artwork in lt.iterator(last_3_artworks):
+            print(artwork)
+
         print("")
         print("-----------------------------------------------------------------------------------")
         print("")
-        print('Últimos tres artistas cargados:' + str(catalog['Artist']["elements"][-3:]))
+        print('Últimos tres artistas cargados:')
+        
+        for artist in lt.iterator(last_3_artists):
+            print(artist )
 
     elif int(inputs[0]) == 2:
         año_inicial = int(input('Año inicial para el rango de busqueda: '))
@@ -107,7 +132,10 @@ while True:
         printArtistDate(artist, año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
-        pass
+        name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
+        tecniques = controller.getArtistTecnique(catalog, name)
+        printArtistTecnique(catalog, tecniques, name)
+        
 
     elif int(inputs[0]) == 4:
         pass

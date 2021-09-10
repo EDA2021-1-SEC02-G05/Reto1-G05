@@ -45,44 +45,18 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     """
     catalog = {'Artwork': None,
                'Artist': None,
-               'ArtworkArtist': None,
                'ArtistDate':None,
                 }
 
     catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
-                                    cmpfunction="")
+                                    cmpfunction=cmpartistID)
     catalog['ArtistDate'] = lt.newList(list_type,
                                  cmpfunction="")
-
 
     return catalog
 
 # Funciones para agregar informacion al catalogo
-
-
-def addArtwork(catalog, artwork):
-
-    "Se utiliza un diccionario para extraer únicamente los datos necesarios"
-
-    list_artwork = {'ObjectID':artwork['ObjectID'], 
-                    'Title':artwork['Title'], 
-                    'ConstituentID':artwork['ConstituentID'], 
-                    'Date': artwork[ 'Date'],
-                    'Medium':artwork['Medium'], 
-                    'Dimensions':artwork['Dimensions'],
-                    'CreditLine': artwork['CreditLine'], 
-                    'Department':artwork['Department'], 
-                    'DateAcquired':artwork['DateAcquired']}
-
-    lt.addLast(catalog['Artwork'], list_artwork)
-    'agregar listas para ordenar'
-    artist_id = artwork['ConstituentID'].split(',')
-
-    for artist in artist_id:
-        addArtworkArtist(catalog, artist.strip(), artwork)
-
-
 def addArtist(catalog,artists):
     artist = {'ConstituentID':artists['ConstituentID'],
                     'DisplayName': artists['DisplayName'],
@@ -94,15 +68,37 @@ def addArtist(catalog,artists):
                     
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
     
-    lt.addLast(catalog['Artist'], artist)  
-    
-        
+    lt.addLast(catalog['Artist'], artist) 
+
+def addArtwork(catalog, artwork):
+
+    "Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artwork.csv"
+
+    artwork = {'ObjectID':artwork['ObjectID'], 
+                    'Title':artwork['Title'], 
+                    'ConstituentID':artwork['ConstituentID'][1:-1], 
+                    'Date': artwork[ 'Date'],
+                    'Medium':artwork['Medium'], 
+                    'Dimensions':artwork['Dimensions'],
+                    'CreditLine': artwork['CreditLine'], 
+                    'Department':artwork['Department'], 
+                    'DateAcquired':artwork['DateAcquired']}
+
+    lt.addLast(catalog['Artwork'], artwork)
+    'agregar listas para ordenar'
+    artist_id = artwork['ConstituentID'].split(',')
+    for artist in artist_id:
+        addArtworkArtist(catalog, artist, artwork)
+
+
 def addArtworkArtist(catalog, artist_id, artwork):
     artists = catalog['Artist']
     posartist = lt.isPresent(artists, artist_id)
+
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
         lt.addLast(artist['Artworks'], artwork)
+    
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
     
@@ -125,10 +121,9 @@ def newArtistDate(artist, date, deathdate, nationality, gender):
 
     return artist_date
 
+
 # Funciones de consulta
 def getArtistYear(catalog,año_inicial,año_final):
-
-    
 
     artist_inrange = lt.newList("ARRAY_LIST")
 
@@ -136,16 +131,51 @@ def getArtistYear(catalog,año_inicial,año_final):
 
         if int(artist['BeginDate']) >= año_inicial and int(artist['BeginDate']) <= año_final:
         
-            lt.addLast(artist_inrange, artist )
+            lt.addLast(artist_inrange, artist)
 
     sortYear(artist_inrange)
     return artist_inrange
 
+def getArtistTecnique(catalog,name):
+    tecniques = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
+    
+    for artist in lt.iterator(catalog['Artist']):
+
+        if artist['DisplayName'].lower() == name.lower():
+
+            for artwork in lt.iterator(artist['Artworks']):
+                tecnique = artwork['Medium']
+                postechnique = lt.isPresent(tecniques, tecnique)
+                
+                if postechnique > 0:
+                    tec = lt.getElement(tecnique,postechnique)
+                    lt.addLast(tecniques[tec], artwork)
+                else:
+                    tec = {tecnique: lt.newList('ARRAY_LIST')}
+
+                    lt.addLast(tec, artwork)
+                    lt.addLast(tecniques,tec)
+        break
+                
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def cmpartistyear(artist1,artist2):
 
     return int(artist1['BeginDate']) < int(artist2['BeginDate'])
+
+def cmpartistID(artistid1,artist):
+    if (artistid1 in artist['ConstituentID']):
+        return 0
+    else:
+        return -1
+
+def cmpArtistTecnique(tecnique1, artwork):
+
+    if (tecnique1.lower() in artwork['Medium'].lower()):
+        return 0 
+    else:
+        return -1
+
 
 # Funciones de ordenamiento
 
