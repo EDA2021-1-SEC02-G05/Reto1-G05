@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from App.controller import getArtistTecnique
 import config as cf
 import sys
 import controller
@@ -37,8 +38,8 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Listar cornológicamente los artistas")
-    print("3- Listar cornológicamente las adquisiciones")
+    print("2- Listar cronológicamente los artistas")
+    print("3- Listar cronológicamente las adquisiciones")
     print("4- Clasificar las obras de una artista por técnica")
     print("5- Clasificar las obras por nacionalidad de sus creadores")
     print("6- Transportar obras de un departamento")
@@ -76,12 +77,21 @@ def printArtistDate(artists, año_inicial, año_final):
             print("Nombre: " + artist["name"] + ", Año de nacimiento: " + artist["BeginDate"] + ", Año de muerte: " + artist["EndDate"] + ", Nacionalidad: "+ artist["nationality"] + ", Género: " + artist["gender"])
     else:
         print('No se encontraron artistas nacidos en este rango de años')
-        
-
-    
 
 catalog = None
 
+def printArtistTecnique(catalog,tecnique, name):
+    tamano = lt.size(catalog['Artist']['Artworks'])
+    print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
+    tamano_tecnicas = lt.size(tecnique)
+    print('El total de medios utilizados por el artista es: '+str(tamano_tecnicas))
+
+    for artwork in lt.iterator(tecnique):
+        mayor = None
+        if lt.size(artwork) > lt.size(mayor):
+            mayor = artwork
+    
+    print('')
 """
 Menu principal
 """
@@ -122,7 +132,10 @@ while True:
         printArtistDate(artist, año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
-        pass
+        name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
+        tecniques = controller.getArtistTecnique(catalog, name)
+        printArtistTecnique(catalog, tecniques, name)
+        
 
     elif int(inputs[0]) == 4:
         pass

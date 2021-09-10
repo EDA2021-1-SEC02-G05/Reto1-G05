@@ -43,8 +43,9 @@ def loadData(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
-    loadArtworks(catalog)
     loadArtists(catalog)
+    loadArtworks(catalog)
+    
 
 def loadArtworks(catalog):
 
@@ -73,3 +74,8 @@ def getArtistYear(catalog,año_inicial, año_final):
 
     artist = model.getArtistYear(catalog, año_inicial, año_final)
     return artist
+
+def getArtistTecnique(catalog,name):
+
+    tecnique = model.getArtistTecnique(catalog, name)
+    return tecnique
