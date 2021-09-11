@@ -29,6 +29,7 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as sa
 assert cf
+import datetime as d
 
 
 """
@@ -47,6 +48,7 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     catalog = {'Artwork': None,
                'Artist': None,
                'ArtistDate':None,
+               'ArtworkDate':None,
                 }
 
     catalog['Artwork'] = lt.newList(list_type)
@@ -55,10 +57,18 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     catalog['ArtistDate'] = lt.newList(list_type,
                                  cmpfunction="")
 
+    catalog['ArtworkDate'] = lt.newList(list_type,
+                                 cmpfunction="")
+
     return catalog
 
 # Funciones para agregar informacion al catalogo
 def addArtist(catalog,artists):
+    """
+    Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artists.csv y
+    con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
+    """
+
     artist = {'ConstituentID':artists['ConstituentID'],
                     'DisplayName': artists['DisplayName'],
                     'Nationality':artists['Nationality'],
@@ -68,17 +78,19 @@ def addArtist(catalog,artists):
                     'Artworks':lt.newList('ARRAY_LIST')}
                     
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
-    
     lt.addLast(catalog['Artist'], artist) 
 
 def addArtwork(catalog, artwork):
 
-    "Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artwork.csv"
+    """
+    Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artwork.csv y
+    con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
+    """
 
     artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':artwork['Title'], 
                     'ConstituentID':artwork['ConstituentID'][1:-1], 
-                    'Date': artwork[ 'Date'].,
+                    'Date': artwork[ 'Date'].split("/"),
                     'Medium':artwork['Medium'], 
                     'Dimensions':artwork['Dimensions'],
                     'CreditLine': artwork['CreditLine'], 
@@ -86,13 +98,16 @@ def addArtwork(catalog, artwork):
                     'DateAcquired':artwork['DateAcquired']}
 
     lt.addLast(catalog['Artwork'], artwork)
-    'agregar listas para ordenar'
+    
+    addArtworkDate(catalog,artwork['Title'],artwork['Date'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] )
+    
     artist_id = artwork['ConstituentID'].split(',')
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
 
 
 def addArtworkArtist(catalog, artist_id, artwork):
+   
     artists = catalog['Artist']
     posartist = lt.isPresent(artists, artist_id)
 
@@ -107,6 +122,13 @@ def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
         adate = newArtistDate(artist,date, deathdate, nationality, gender )
 
         lt.addLast(catalog['ArtistDate'],adate)
+
+def addArtworkDate(catalog, artwork, date, artist, medio, dimensions):
+    
+    if int(date) != 0 :
+        adate = newArtworkDate(artwork,date, artist, medio, dimensions)
+
+        lt.addLast(catalog['ArtworkDate'],adate)
     
 
 # Funciones para creacion de datos
@@ -121,6 +143,16 @@ def newArtistDate(artist, date, deathdate, nationality, gender):
     artist_date['gender'] = gender
 
     return artist_date
+
+def newArtworkDate(artwork, date, artist, medio, dimensions):
+    artwork_date = {'Title': '', 'Date':'', 'Artist':'', 'Medium':'','Dimensions':''}
+    artwork_date['Title'] = artwork
+    artwork_date['Date'] = date
+    artwork_date['Artist'] = artist
+    artwork_date['Medium'] = medio
+    artwork_date['Dimensions'] = dimensions
+
+    return artwork_date
 
 
 # Funciones de consulta
@@ -142,9 +174,9 @@ def getArtworkYear(catalog,año_inicial,año_final):
 
     artwork_inrange = lt.newList("ARRAY_LIST")
 
-    for artwork in lt.iterator(catalog['Date']):
+    for artwork in lt.iterator(catalog['ArtworkDate']):
 
-        if artwork['Date'] == " " :
+        if artwork['Date'] != " " :
 
             if int(artwork['Date']) >= año_inicial and int(artwork['Date']) <= año_final:
         
@@ -183,8 +215,10 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
+    date_lista1 = artwork1['Date']
+    date_lista2 = artwork2['Date']
 
-    return int(artwork1['Date']) < int(artwork2['Date'])
+    return int(d.date(int(date_lista1[0]),int(date_lista1[1]),int(date_lista1[2])))< int(int(date_lista2[0]),int(date_lista2[1]),int(date_lista2[2]))
 
 def cmpartistID(artistid1,artist):
     if (artistid1 in artist['ConstituentID']):

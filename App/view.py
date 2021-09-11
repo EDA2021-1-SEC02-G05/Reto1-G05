@@ -133,8 +133,8 @@ while True:
 
     elif int(inputs[0]) == 3:
     
-        año_inicial = (input('Año inicial para el rango de busqueda: '))
-        año_final = (input ('Año final para el rango de busqueda: '))
+        año_inicial = input('Año inicial para el rango de busqueda: ')
+        año_final = input ('Año final para el rango de busqueda: ')
         artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
         printArtistDate(artist, año_inicial, año_final )
 
