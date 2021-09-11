@@ -20,7 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
-from App.controller import getArtistTecnique
+
 import config as cf
 import sys
 import controller

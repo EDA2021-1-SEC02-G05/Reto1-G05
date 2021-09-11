@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as sa
 assert cf
 
+
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
@@ -77,7 +78,7 @@ def addArtwork(catalog, artwork):
     artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':artwork['Title'], 
                     'ConstituentID':artwork['ConstituentID'][1:-1], 
-                    'Date': artwork[ 'Date'],
+                    'Date': artwork[ 'Date'].,
                     'Medium':artwork['Medium'], 
                     'Dimensions':artwork['Dimensions'],
                     'CreditLine': artwork['CreditLine'], 
@@ -143,9 +144,11 @@ def getArtworkYear(catalog,año_inicial,año_final):
 
     for artwork in lt.iterator(catalog['Date']):
 
-        if int(artwork['Date']) >= año_inicial and int(artwork['Date']) <= año_final:
+        if artwork['Date'] == " " :
+
+            if int(artwork['Date']) >= año_inicial and int(artwork['Date']) <= año_final:
         
-            lt.addLast(artwork_inrange, artwork )
+                lt.addLast(artwork_inrange, artwork )
 
     sortYear_artwork(artwork_inrange)
     return artwork_inrange
