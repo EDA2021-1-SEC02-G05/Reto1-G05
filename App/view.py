@@ -80,6 +80,42 @@ def printArtistDate(artists, año_inicial, año_final):
 
 catalog = None
 
+def printArtworkDate(artworks, año_inicial, año_final):
+
+    tamano = lt.size(artworks)
+
+    first_3_artworks = lt.subList(artworks, 1, 3 )
+    last_3_artworks = lt.subList(artworks, tamano - 3, 3)
+
+    if tamano > 0:
+
+        print ('Se encontraron ' + str(tamano) + ' obras de arte adquiridas en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
+
+        for artwork in lt.iterator(artworks):
+            cont = 1
+            if 'purchase' in artworks['CreditLine'].lower():
+                cont += 1
+
+        print('Se encontraron ' + str(cont) + ' obras que fueron compradas.')
+    
+        print('Las primeras 3 obras de arte encontradas en el rango son: ')
+        for artwork in lt.iterator(first_3_artworks):
+            print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["Date"] + ", Artista/s : " + artwork["Artist"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
+            
+
+        print('\nLas últimas 3 obras de arte encontradas en el rango son: ')
+        for artwork in lt.iterator(last_3_artworks):
+            print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["Date"] + ", Artista/s : " + artwork["Artist"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
+    else:
+        print('No se encontraron obras de arte adquiridas en este rango de años')
+
+
+
+
+
+
+
+
 def printArtistTecnique(catalog,tecnique, name):
     tamano = lt.size(catalog['Artist']['Artworks'])
     print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
@@ -99,6 +135,9 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        
+        tipo_ed = input('¿Qué tipo de representación de la lista desea?: ')
+        
         print("Cargando información de los archivos ....\n")
         catalog = initCatalog()
         loadData(catalog)
@@ -126,19 +165,26 @@ while True:
             print(artist )
 
     elif int(inputs[0]) == 2:
+
+        "Requerimiento 1: artistas por fecha de nacimiento"
+
         año_inicial = int(input('Año inicial para el rango de busqueda: '))
         año_final = int(input ('Año final para el rango de busqueda: '))
         artist = controller.getArtistYear(catalog, año_inicial, año_final)
         printArtistDate(artist, año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
-    
+
+        "Requerimiento 2: obras de arte por fecha de adquisición"
+
         año_inicial = input('Año inicial para el rango de busqueda: ')
         año_final = input ('Año final para el rango de busqueda: ')
         artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
-        printArtistDate(artist, año_inicial, año_final )
+        printArtworkDate(artwork, año_inicial, año_final )
 
     elif int(inputs[0]) == 4:
+
+        "Requerimiento 3: clasifica obras de un artista por técnica"
         
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
