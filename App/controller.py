@@ -62,11 +62,17 @@ def loadArtists(catalog):
         model.addArtist(catalog, artist)
 
 # Funciones de ordenamiento
-def sortYear(catalog):
+def sortYear_Artist(catalog):
     """
     Ordena a los artistas por fecha de nacimiento
     """
-    model.sortYear(catalog)
+    model.sortYear_Artist(catalog)
+
+def sortYear_Artwork(catalog):
+    """
+    Ordena a las obras de arte por fecha de adquisición
+    """
+    model.sortYear_Artwork(catalog)
 
 # Funciones de consulta sobre el catálogo
 

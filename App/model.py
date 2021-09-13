@@ -87,10 +87,11 @@ def addArtwork(catalog, artwork):
     con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
     """
 
+
     artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':artwork['Title'], 
                     'ConstituentID':artwork['ConstituentID'][1:-1], 
-                    'Date': artwork[ 'Date'].split("/"),
+                    'Date': artwork[ 'Date'],
                     'Medium':artwork['Medium'], 
                     'Dimensions':artwork['Dimensions'],
                     'CreditLine': artwork['CreditLine'], 
@@ -99,7 +100,7 @@ def addArtwork(catalog, artwork):
 
     lt.addLast(catalog['Artwork'], artwork)
     
-    addArtworkDate(catalog,artwork['Title'],artwork['Date'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] )
+    addArtworkDate(catalog,artwork['Title'],artwork['Date'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
     
     artist_id = artwork['ConstituentID'].split(',')
     for artist in artist_id:
@@ -123,10 +124,12 @@ def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
 
         lt.addLast(catalog['ArtistDate'],adate)
 
-def addArtworkDate(catalog, artwork, date, artist, medio, dimensions):
+def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline):
     
-    if int(date) != 0 :
-        adate = newArtworkDate(artwork,date, artist, medio, dimensions)
+    
+    if date != '' :
+        
+        adate = newArtworkDate(artwork,date, artist, medio, dimensions, creditline)
 
         lt.addLast(catalog['ArtworkDate'],adate)
     
@@ -144,13 +147,14 @@ def newArtistDate(artist, date, deathdate, nationality, gender):
 
     return artist_date
 
-def newArtworkDate(artwork, date, artist, medio, dimensions):
-    artwork_date = {'Title': '', 'Date':'', 'Artist':'', 'Medium':'','Dimensions':''}
+def newArtworkDate(artwork, date, artist, medio, dimensions, creditline):
+    artwork_date = {'Title': '', 'Date':'', 'Artist':'', 'Medium':'','Dimensions':'', 'CreditLine':''}
     artwork_date['Title'] = artwork
     artwork_date['Date'] = date
     artwork_date['Artist'] = artist
     artwork_date['Medium'] = medio
     artwork_date['Dimensions'] = dimensions
+    artwork_date['CreditLine'] = creditline
 
     return artwork_date
 
@@ -166,23 +170,23 @@ def getArtistYear(catalog,año_inicial,año_final):
         
             lt.addLast(artist_inrange, artist)
 
-    sortYear(artist_inrange)
+    sortYear_Artist(artist_inrange)
     return artist_inrange
 
     
 def getArtworkYear(catalog,año_inicial,año_final):
 
     artwork_inrange = lt.newList("ARRAY_LIST")
-
+ 
     for artwork in lt.iterator(catalog['ArtworkDate']):
+        date = artwork['Date'].split()
+        d1 = d.datetime(date[0],date[1], date[2])
 
-        if artwork['Date'] != " " :
+        if d1 >= año_inicial and d1 <= año_final:
+    
+            lt.addLast(artwork_inrange, artwork )
 
-            if int(artwork['Date']) >= año_inicial and int(artwork['Date']) <= año_final:
-        
-                lt.addLast(artwork_inrange, artwork )
-
-    sortYear_artwork(artwork_inrange)
+    sortYear_Artwork(artwork_inrange)
     return artwork_inrange
 
 def getArtistTecnique(catalog,name):
@@ -215,10 +219,13 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
-    date_lista1 = artwork1['Date']
-    date_lista2 = artwork2['Date']
+    date_1 = artwork1['Date'].split()
+    date_2 = artwork2['Date'].split()
 
-    return int(d.date(int(date_lista1[0]),int(date_lista1[1]),int(date_lista1[2])))< int(int(date_lista2[0]),int(date_lista2[1]),int(date_lista2[2]))
+    d1 = d.datetime(date_1[0],date_1[1],date_1[2])
+    d2 = d.datetime(date_2[0],date_2[1], date_2[2])
+
+    return d1 < d2
 
 def cmpartistID(artistid1,artist):
     if (artistid1 in artist['ConstituentID']):
@@ -235,13 +242,12 @@ def cmpArtistTecnique(tecnique1, artwork):
 
 # Funciones de ordenamiento
 
-def sortYear(artist_inrange):
+def sortYear_Artist(artist_inrange):
 
     sa.sort(artist_inrange, cmpartistyear)
 
 
-def sortYear_artwork(artwork_inrange):
+def sortYear_Artwork(artwork_inrange):
 
     sa.sort(artwork_inrange, cmpartworkyear)
 
-#quiero cambiar estos nombres
