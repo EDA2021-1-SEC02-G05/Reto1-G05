@@ -136,7 +136,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         
-        tipo_ed = input('¿Qué tipo de representación de la lista desea?: ')
+        #tipo_ed = input('¿Qué tipo de representación de la lista desea?: ')
         
         print("Cargando información de los archivos ....\n")
         catalog = initCatalog()
