@@ -100,7 +100,7 @@ def addArtwork(catalog, artwork):
 
     lt.addLast(catalog['Artwork'], artwork)
     
-    addArtworkDate(catalog,artwork['Title'],artwork['Date'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
+    addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
     
     artist_id = artwork['ConstituentID'].split(',')
     for artist in artist_id:
@@ -177,16 +177,24 @@ def getArtistYear(catalog,año_inicial,año_final):
 def getArtworkYear(catalog,año_inicial,año_final):
 
     artwork_inrange = lt.newList("ARRAY_LIST")
- 
-    for artwork in lt.iterator(catalog['ArtworkDate']):
-        date = artwork['Date'].split()
-        d1 = d.datetime(date[0],date[1], date[2])
+    
+    #Fechas ingresadas
+    año_i = año_inicial.split("-")
+    di = d.datetime(int(año_i[0]),int(año_i[1]), int(año_i[2]))
+    año_f = año_final.split("-")
+    df = d.datetime(int(año_f[0]),int(año_f[1]), int(año_f[2]))
 
-        if d1 >= año_inicial and d1 <= año_final:
+    #Fechas del csv
+    for artwork in lt.iterator(catalog['ArtworkDate']):
+        date = artwork['Date'].split("-")
+        d1 = d.datetime(int(date[0]),int(date[1]), int(date[2]))
+
+        if d1 >= di and d1 <= df:
     
             lt.addLast(artwork_inrange, artwork )
-
     sortYear_Artwork(artwork_inrange)
+
+    #print(artwork_inrange)
     return artwork_inrange
 
 def getArtistTecnique(catalog,name):
@@ -219,11 +227,11 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
-    date_1 = artwork1['Date'].split()
-    date_2 = artwork2['Date'].split()
+    date_1 = artwork1['Date'].split("-")
+    date_2 = artwork2['Date'].split("-")
 
-    d1 = d.datetime(date_1[0],date_1[1],date_1[2])
-    d2 = d.datetime(date_2[0],date_2[1], date_2[2])
+    d1 = d.datetime(int(date_1[0]),int(date_1[1]),int(date_1[2]))
+    d2 = d.datetime(int(date_2[0]),int(date_2[1]), int(date_2[2]))
 
     return d1 < d2
 
@@ -250,4 +258,3 @@ def sortYear_Artist(artist_inrange):
 def sortYear_Artwork(artwork_inrange):
 
     sa.sort(artwork_inrange, cmpartworkyear)
-
