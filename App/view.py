@@ -61,7 +61,7 @@ def printArtistDate(artists, año_inicial, año_final):
     tamano = lt.size(artists)
 
     first_3_artists = lt.subList(artists, 1, 3 )
-    last_3_artists = lt.subList(artists, tamano - 3, 3)
+    last_3_artists = lt.subList(artists, tamano - 2, 3)
 
     if tamano > 0 :
         
@@ -85,7 +85,7 @@ def printArtworkDate(artworks, año_inicial, año_final):
     tamano = lt.size(artworks)
 
     first_3_artworks = lt.subList(artworks, 1, 3 )
-    last_3_artworks = lt.subList(artworks, tamano - 3, 3)
+    last_3_artworks = lt.subList(artworks, tamano - 2, 3)
 
     if tamano > 0:
 
