@@ -93,7 +93,7 @@ def printArtworkDate(artworks, año_inicial, año_final):
 
         for artwork in lt.iterator(artworks):
             cont = 1
-            if 'purchase' in artworks['CreditLine'].lower():
+            if 'purchase' in artwork['CreditLine'].lower():
                 cont += 1
 
         print('Se encontraron ' + str(cont) + ' obras que fueron compradas.')
@@ -136,7 +136,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         
-        #tipo_ed = input('¿Qué tipo de representación de la lista desea?: ')
+       # tipo_ed = input('¿Qué tipo de representación de la lista desea?: ')
         
         print("Cargando información de los archivos ....\n")
         catalog = initCatalog()
@@ -177,8 +177,8 @@ while True:
 
         "Requerimiento 2: obras de arte por fecha de adquisición"
 
-        año_inicial = input('Año inicial para el rango de busqueda: ')
-        año_final = input ('Año final para el rango de busqueda: ')
+        año_inicial = (input('Año inicial para el rango de busqueda: '))
+        año_final = (input('Año final para el rango de busqueda: '))
         artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
         printArtworkDate(artwork, año_inicial, año_final )
 
