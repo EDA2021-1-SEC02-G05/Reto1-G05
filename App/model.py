@@ -100,7 +100,7 @@ def addArtwork(catalog, artwork):
 
     lt.addLast(catalog['Artwork'], artwork)
     
-    addArtworkDate(catalog,artwork['Title'],artwork['Date'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
+    addArtworkDate(catalog,artwork['Title'],artwork['DateAcquiredc'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
     
     artist_id = artwork['ConstituentID'].split(',')
     for artist in artist_id:
@@ -179,7 +179,7 @@ def getArtworkYear(catalog,año_inicial,año_final):
     artwork_inrange = lt.newList("ARRAY_LIST")
  
     for artwork in lt.iterator(catalog['ArtworkDate']):
-        date = artwork['Date'].split()
+        date = artwork['Date'].split('/')
         d1 = d.datetime(date[0],date[1], date[2])
 
         if d1 >= año_inicial and d1 <= año_final:
