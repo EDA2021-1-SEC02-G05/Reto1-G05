@@ -27,7 +27,10 @@
 
 import config as cf
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import mergesort as sa
+from DISClib.Algorithms.Sorting import mergesort as ms
+from DISClib.Algorithms.Sorting import shellsort as ss
+from DISClib.Algorithms.Sorting import insertionsort as iss
+from DISClib.Algorithms.Sorting import quicksort as qs
 assert cf
 import datetime as d
 
@@ -39,7 +42,7 @@ los mismos.
 
 
 # Construccion de modelos
-def newCatalog(list_type = 'ARRAY_LIST'):
+def newCatalog(list_type):
     """
     Inicializa el catálogo de artistas y obras. Crea una lista vacia para guardar
     todas las obras y artistas del museo, adicionalmente se crea una lista que relaciona las obras de arte con sus artistas y una lista
@@ -252,9 +255,31 @@ def cmpArtistTecnique(tecnique1, artwork):
 
 def sortYear_Artist(artist_inrange):
 
-    sa.sort(artist_inrange, cmpartistyear)
+    ms.sort(artist_inrange, cmpartistyear)
 
 
-def sortYear_Artwork(artwork_inrange):
+#def sortYear_Artwork(artwork_inrange):
 
-    sa.sort(artwork_inrange, cmpartworkyear)
+#        ms.sort(artwork_inrange, cmpartworkyear)
+
+##PARTE DEL LABORATORIO
+
+def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
+    
+    muestra = lt.subList(catalog['Artwork'], 1, tamano_muestra)
+
+    if algo_ord.lower() == 'merge sort':
+
+        ms.sort(muestra, cmpartworkyear)
+
+    elif algo_ord.lower() == 'quick sort':
+
+        qs.sort(muestra, cmpartworkyear)
+    
+    elif algo_ord.lower() == 'shell sort':
+
+        ss.sort(muestra, cmpartworkyear)
+
+    elif algo_ord.lower() == 'insertion sort':
+
+        iss.sort(muestra, cmpartworkyear)
