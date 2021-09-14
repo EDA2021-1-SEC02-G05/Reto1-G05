@@ -173,6 +173,8 @@ while True:
 
         ordenamiento = controller.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
 
+        print("Para la muestra de", tamano_muestra, " elementos, el tiempo (mseg) es: ", str(ordenamiento[0]))
+
     #    "Requerimiento 1: artistas por fecha de nacimiento"
 
     #    año_inicial = int(input('Año inicial para el rango de busqueda: '))
