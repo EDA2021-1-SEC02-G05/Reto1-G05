@@ -167,8 +167,8 @@ while True:
 
         tamano_muestra = int(input('Tamaño de la muestra que desea utilizar: '))
 
-        if tamano_muestra >= lt.size(catalog['Artwork']):
-            tamano_muestra = int(input('El tamaño que escogió es muy grande, elija una muestra menor a ', str(lt.size(catalog['Artwork'])), ': '))
+        if tamano_muestra > lt.size(catalog['Artwork']):
+            tamano_muestra = int(input('El tamaño que escogió es muy grande, elija una muestra menor a '+ str(lt.size(catalog['Artwork'])+ ': '))
 
         algo_ord = input('Tipo de algoritmo de ordenamiento que desea utilizar (merge sort, insertion sort, quick sort o shell sort): ')
 
