@@ -23,7 +23,7 @@
 import config as cf
 import model
 import csv
-
+import time
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -33,6 +33,10 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 def initCatalog(tipo_ed):
 
+    """
+    Inicializa la estructura del catalogo.
+    """
+
     catalog = model.newCatalog(tipo_ed)
     return catalog
 
@@ -40,23 +44,27 @@ def initCatalog(tipo_ed):
 
 def loadData(catalog):
     """
-    Carga los datos de los archivos y cargar los datos en la
-    estructura de datos
+    Carga los datos de los archivos y carga los datos en la
+    estructura de datos seleccionada
     """
     loadArtists(catalog)
     loadArtworks(catalog)
-    
+
+
 
 def loadArtworks(catalog):
 
-    artworksfile = cf.data_dir + 'MoMA/Artworks-utf8-small.csv'
+    """
+    Carga el archivo .csv de los artworks en la respectiva lista 
+    """
+    artworksfile = cf.data_dir + 'MoMA/Artworks-utf8-10pct.csv'
     input_file = csv.DictReader(open(artworksfile, encoding='utf-8'))
     for artworks in input_file:
         model.addArtwork(catalog, artworks)
 
 def loadArtists(catalog):
 
-    artistsfile = cf.data_dir + 'MoMA/Artists-utf8-small.csv'
+    artistsfile = cf.data_dir + 'MoMA/Artists-utf8-10pct.csv'
     input_file = csv.DictReader(open(artistsfile, encoding='utf-8'))
     for artist in input_file:
         model.addArtist(catalog, artist)
