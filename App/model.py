@@ -231,7 +231,7 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
-    #date_1 = artwork1['DateAcquired'].split("-")
+    #date_1 = artwork1['DateAcquired'].split("-") 2020-09-10 [2020,09,10]
     #date_2 = artwork2['DateAcquired'].split("-")
 
     if artwork1['DateAcquired'] != '' and artwork2['DateAcquired'] != '':
