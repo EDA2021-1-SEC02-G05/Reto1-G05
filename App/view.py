@@ -27,6 +27,8 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 
+default_time = 1000
+sys.setrecursionlimit(default_time*10)
 
 """
 La vista se encarga de la interacción con el usuario
@@ -90,9 +92,9 @@ def printArtworkDate(artworks, año_inicial, año_final):
     if tamano > 0:
 
         print ('Se encontraron ' + str(tamano) + ' obras de arte adquiridas en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
-
+        cont = 1
         for artwork in lt.iterator(artworks):
-            cont = 1
+            
             if 'purchase' in artwork['CreditLine'].lower():
                 cont += 1
 
@@ -108,12 +110,6 @@ def printArtworkDate(artworks, año_inicial, año_final):
             print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["Date"] + ", Artista/s : " + artwork["Artist"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
     else:
         print('No se encontraron obras de arte adquiridas en este rango de años')
-
-
-
-
-
-
 
 
 def printArtistTecnique(catalog,tecnique, name):
@@ -163,17 +159,20 @@ while True:
         for artist in lt.iterator(last_3_artists):
             print(artist )
 
+        print()
+
     elif int(inputs[0]) == 2:
 
         #PARTE DEL LAB
 
         tamano_muestra = int(input('Tamaño de la muestra que desea utilizar: '))
 
+        if tamano_muestra >= lt.size(catalog['Artwork']):
+            tamano_muestra = int(input('El tamaño que escogió es muy grande, elija una muestra menor a ', str(lt.size(catalog['Artwork'])), ': '))
+
         algo_ord = input('Tipo de algoritmo de ordenamiento que desea utilizar (merge sort, insertion sort, quick sort o shell sort): ')
 
-        ordenamiento = controller.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
-
-        print("Para la muestra de", tamano_muestra, " elementos, el tiempo (mseg) es: ", str(ordenamiento[0]))
+    
 
     #    "Requerimiento 1: artistas por fecha de nacimiento"
 
@@ -184,12 +183,16 @@ while True:
 
     elif int(inputs[0]) == 3:
 
-        "Requerimiento 2: obras de arte por fecha de adquisición"
+        ordenamiento = controller.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
 
-        año_inicial = (input('Año inicial para el rango de busqueda: '))
-        año_final = (input('Año final para el rango de busqueda: '))
-        artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
-        printArtworkDate(artwork, año_inicial, año_final )
+        print("Para la muestra de", tamano_muestra, " elementos, el tiempo (mseg) es: ", str(round(ordenamiento[0], 2)))
+
+        #"Requerimiento 2: obras de arte por fecha de adquisición"
+
+        #año_inicial = (input('Año inicial para el rango de busqueda: '))
+        #año_final = (input('Año final para el rango de busqueda: '))
+        #artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
+        #printArtworkDate(artwork, año_inicial, año_final )
 
     elif int(inputs[0]) == 4:
 
