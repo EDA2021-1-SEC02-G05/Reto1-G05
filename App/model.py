@@ -27,9 +27,13 @@
 
 import config as cf
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import mergesort as sa
+from DISClib.Algorithms.Sorting import mergesort as ms
+from DISClib.Algorithms.Sorting import shellsort as ss
+from DISClib.Algorithms.Sorting import insertionsort as iss
+from DISClib.Algorithms.Sorting import quicksort as qs
 assert cf
 import datetime as d
+import time
 
 
 """
@@ -39,7 +43,7 @@ los mismos.
 
 
 # Construccion de modelos
-def newCatalog(list_type = 'ARRAY_LIST'):
+def newCatalog(list_type):
     """
     Inicializa el catálogo de artistas y obras. Crea una lista vacia para guardar
     todas las obras y artistas del museo, adicionalmente se crea una lista que relaciona las obras de arte con sus artistas y una lista
@@ -148,9 +152,9 @@ def newArtistDate(artist, date, deathdate, nationality, gender):
     return artist_date
 
 def newArtworkDate(artwork, date, artist, medio, dimensions, creditline):
-    artwork_date = {'Title': '', 'Date':'', 'Artist':'', 'Medium':'','Dimensions':'', 'CreditLine':''}
+    artwork_date = {'Title': '', 'DateAcquired':'', 'Artist':'', 'Medium':'','Dimensions':'', 'CreditLine':''}
     artwork_date['Title'] = artwork
-    artwork_date['Date'] = date
+    artwork_date['DateAcquired'] = date
     artwork_date['Artist'] = artist
     artwork_date['Medium'] = medio
     artwork_date['Dimensions'] = dimensions
@@ -186,7 +190,7 @@ def getArtworkYear(catalog,año_inicial,año_final):
 
     #Fechas del csv
     for artwork in lt.iterator(catalog['ArtworkDate']):
-        date = artwork['Date'].split("-")
+        date = artwork['DateAcquired'].split("-")
         d1 = d.datetime(int(date[0]),int(date[1]), int(date[2]))
 
         if d1 >= di and d1 <= df:
@@ -227,13 +231,18 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
-    date_1 = artwork1['Date'].split("-")
-    date_2 = artwork2['Date'].split("-")
+    #date_1 = artwork1['DateAcquired'].split("-")
+    #date_2 = artwork2['DateAcquired'].split("-")
 
-    d1 = d.datetime(int(date_1[0]),int(date_1[1]),int(date_1[2]))
-    d2 = d.datetime(int(date_2[0]),int(date_2[1]), int(date_2[2]))
+    if artwork1['DateAcquired'] != '' and artwork2['DateAcquired'] != '':
 
-    return d1 < d2
+        date_1 = d.date.fromisoformat(artwork1['DateAcquired'])
+        date_2 = d.date.fromisoformat(artwork2['DateAcquired'])
+
+        #d1 = d.datetime(int(date_1[0]),int(date_1[1]),int(date_1[2]))
+        #d2 = d.datetime(int(date_2[0]),int(date_2[1]), int(date_2[2]))
+
+        return date_1 < date_2
 
 def cmpartistID(artistid1,artist):
     if (artistid1 in artist['ConstituentID']):
@@ -252,9 +261,50 @@ def cmpArtistTecnique(tecnique1, artwork):
 
 def sortYear_Artist(artist_inrange):
 
-    sa.sort(artist_inrange, cmpartistyear)
+    ms.sort(artist_inrange, cmpartistyear)
 
 
-def sortYear_Artwork(artwork_inrange):
+#def sortYear_Artwork(artwork_inrange):
 
-    sa.sort(artwork_inrange, cmpartworkyear)
+#        ms.sort(artwork_inrange, cmpartworkyear)
+
+##PARTE DEL LABORATORIO
+
+def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
+    
+    muestra = lt.subList(catalog['Artwork'], 1, tamano_muestra)
+
+    if algo_ord.lower() == 'merge sort':
+
+        start_time = time.process_time()
+        sorted_list = ms.sort(muestra, cmpartworkyear)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+
+
+    elif algo_ord.lower() == 'quick sort':
+
+        start_time = time.process_time()
+        sorted_list = qs.sort(muestra, cmpartworkyear)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+
+       
+    elif algo_ord.lower() == 'shell sort':
+
+        start_time = time.process_time()
+        sorted_list = ss.sort(muestra, cmpartworkyear)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+
+    elif algo_ord.lower() == 'insertion sort':
+        
+        start_time = time.process_time()
+        sorted_list = iss.sort(muestra, cmpartworkyear)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+        

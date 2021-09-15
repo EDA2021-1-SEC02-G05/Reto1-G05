@@ -45,11 +45,11 @@ def printMenu():
     print("6- Transportar obras de un departamento")
     print("7- Nuevo exposición en el museo")
 
-def initCatalog():
+def initCatalog(tipo_ed):
     """
     Inicializa el catalogo de obras
     """
-    return controller.initCatalog()
+    return controller.initCatalog(tipo_ed)
 
 def loadData(catalog):
     """
@@ -61,7 +61,7 @@ def printArtistDate(artists, año_inicial, año_final):
     tamano = lt.size(artists)
 
     first_3_artists = lt.subList(artists, 1, 3 )
-    last_3_artists = lt.subList(artists, tamano - 3, 3)
+    last_3_artists = lt.subList(artists, tamano - 2, 3)
 
     if tamano > 0 :
         
@@ -85,7 +85,7 @@ def printArtworkDate(artworks, año_inicial, año_final):
     tamano = lt.size(artworks)
 
     first_3_artworks = lt.subList(artworks, 1, 3 )
-    last_3_artworks = lt.subList(artworks, tamano - 3, 3)
+    last_3_artworks = lt.subList(artworks, tamano - 2, 3)
 
     if tamano > 0:
 
@@ -136,12 +136,11 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         
-       # tipo_ed = input('¿Qué tipo de representación de la lista desea?: ')
+        tipo_ed = input('Tipo de representación de la lista desea (ARRAY_LIST o SINGLE_LINKED): ')
         
-        print("Cargando información de los archivos ....\n")
-        catalog = initCatalog()
+        print("Cargando información de los archivos ...\n")
+        catalog = initCatalog(tipo_ed)
         loadData(catalog)
-
 
         tamano_artwork = lt.size(catalog['Artwork'])
         tamano_artist = lt.size(catalog['Artist'])
@@ -166,12 +165,22 @@ while True:
 
     elif int(inputs[0]) == 2:
 
-        "Requerimiento 1: artistas por fecha de nacimiento"
+        #PARTE DEL LAB
 
-        año_inicial = int(input('Año inicial para el rango de busqueda: '))
-        año_final = int(input ('Año final para el rango de busqueda: '))
-        artist = controller.getArtistYear(catalog, año_inicial, año_final)
-        printArtistDate(artist, año_inicial, año_final )
+        tamano_muestra = int(input('Tamaño de la muestra que desea utilizar: '))
+
+        algo_ord = input('Tipo de algoritmo de ordenamiento que desea utilizar (merge sort, insertion sort, quick sort o shell sort): ')
+
+        ordenamiento = controller.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
+
+        print("Para la muestra de", tamano_muestra, " elementos, el tiempo (mseg) es: ", str(ordenamiento[0]))
+
+    #    "Requerimiento 1: artistas por fecha de nacimiento"
+
+    #    año_inicial = int(input('Año inicial para el rango de busqueda: '))
+    #    año_final = int(input ('Año final para el rango de busqueda: '))
+    #    artist = controller.getArtistYear(catalog, año_inicial, año_final)
+    #    printArtistDate(artist, año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
 

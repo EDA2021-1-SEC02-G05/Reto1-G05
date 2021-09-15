@@ -31,9 +31,9 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros}
 
-def initCatalog():
+def initCatalog(tipo_ed):
 
-    catalog = model.newCatalog()
+    catalog = model.newCatalog(tipo_ed)
     return catalog
 
 # Funciones para la carga de datos
@@ -68,11 +68,21 @@ def sortYear_Artist(catalog):
     """
     model.sortYear_Artist(catalog)
 
-def sortYear_Artwork(catalog):
+#def sortYear_Artwork(catalog):
     """
     Ordena a las obras de arte por fecha de adquisición
     """
-    model.sortYear_Artwork(catalog)
+#    model.sortYear_Artwork(catalog)
+    
+
+#PARTE DEL LAB
+
+def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
+    """
+    Ordena a las obras de arte por fecha de adquisición
+    """
+    return model.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
+    
 
 # Funciones de consulta sobre el catálogo
 
