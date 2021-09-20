@@ -31,13 +31,13 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros}
 
-def initCatalog(tipo_ed):
+def initCatalog():
 
     """
     Inicializa la estructura del catalogo.
     """
 
-    catalog = model.newCatalog(tipo_ed)
+    catalog = model.newCatalog()
     return catalog
 
 # Funciones para la carga de datos
@@ -50,8 +50,6 @@ def loadData(catalog):
     loadArtists(catalog)
     loadArtworks(catalog)
 
-
-
 def loadArtworks(catalog):
 
     """
@@ -63,7 +61,13 @@ def loadArtworks(catalog):
         model.addArtwork(catalog, artworks)
 
 def loadArtists(catalog):
+<<<<<<< HEAD
 
+=======
+    """
+    Carga el archivo .csv de los artistas en la respectiva lista 
+    """
+>>>>>>> 79d318f92bd6e0e06e1cdc717acc877ada1fab2b
     artistsfile = cf.data_dir + 'MoMA/Artists-utf8-small.csv'
     input_file = csv.DictReader(open(artistsfile, encoding='utf-8'))
     for artist in input_file:
@@ -76,35 +80,50 @@ def sortYear_Artist(catalog):
     """
     model.sortYear_Artist(catalog)
 
-#def sortYear_Artwork(catalog):
+def sortYear_Artwork(catalog):
     """
     Ordena a las obras de arte por fecha de adquisición
     """
-#    model.sortYear_Artwork(catalog)
+    model.sortYear_Artwork(catalog)
     
 
 #PARTE DEL LAB
 
-def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
-    """
-    Ordena a las obras de arte por fecha de adquisición
-    """
-    return model.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
+#def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
+    
+#    return model.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
     
 
 # Funciones de consulta sobre el catálogo
 
 def getArtistYear(catalog,año_inicial, año_final):
 
+    """
+    REQ 1
+    Llama a la función en el model para poder obtener una lista ordenada de menor a mayor de aquellos artistas que
+    nacieron en un rango de fechas dadas. 
+    """
+
     artist = model.getArtistYear(catalog, año_inicial, año_final)
     return artist
 
 def getArtworkYear(catalog,año_inicial, año_final):
 
+    """
+    REQ 2
+    Llama a la función en el model para poder obtener una lista ordenada de menor a mayor de aquellas obras de arte que
+    fueron adquiridas en un rango de fechas dadas. 
+    """
+
     artwork = model.getArtworkYear(catalog, año_inicial, año_final)
     return artwork
 
 def getArtistTecnique(catalog,name):
+
+    """
+    REQ 3
+    Llama a la función en el model para poder obtener una lista clasificada por técnica de las obras de un artista dado 
+    """
 
     tecnique = model.getArtistTecnique(catalog, name)
     return tecnique

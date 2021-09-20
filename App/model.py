@@ -43,7 +43,7 @@ los mismos.
 
 
 # Construccion de modelos
-def newCatalog(list_type):
+def newCatalog(list_type = 'ARRAY_LIST'):
     """
     Inicializa el catálogo de artistas y obras. Crea una lista vacia para guardar
     todas las obras y artistas del museo, adicionalmente se crea una lista que relaciona las obras de arte con sus artistas y una lista
@@ -106,11 +106,16 @@ def addArtwork(catalog, artwork):
     lt.addLast(catalog['Artwork'], artwork)
     
     addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
-    
+    """
+    A medida que se lee el archivo, se van extrayendo los artists_id para poder crear una lista que relacione 
+    a los artistas con sus obras de arte.
+    """
     artist_id = artwork['ConstituentID'].split(',')
+
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
 
+<<<<<<< HEAD
 def addNationality(catalog,artists):
     """
     Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artists.csv y
@@ -136,8 +141,12 @@ def addArtworkNationality(catalog, nationalities, nationality):
         nationality = lt.getElement(nations, postnationality)
         lt.addLast(nationality['Artworks'], nationality)
 
+=======
+>>>>>>> 79d318f92bd6e0e06e1cdc717acc877ada1fab2b
 def addArtworkArtist(catalog, artist_id, artwork):
-   
+    """
+    
+    """
     artists = catalog['Artist']
     posartist = lt.isPresent(artists, artist_id)
 
@@ -221,21 +230,25 @@ def getArtworkYear(catalog,año_inicial,año_final):
             lt.addLast(artwork_inrange, artwork )
     sortYear_Artwork(artwork_inrange)
 
-    #print(artwork_inrange)
     return artwork_inrange
 
 def getArtistTecnique(catalog,name):
-    tecniques = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
     
+    tecniques_list = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
+
     for artist in lt.iterator(catalog['Artist']):
-
-        if artist['DisplayName'].lower() == name.lower():
-
+        if name.lower() in artist['DisplayName'].lower():
+            total_obras = lt.size(artist['Artworks'])
             for artwork in lt.iterator(artist['Artworks']):
-                tecnique = artwork['Medium']
-                postechnique = lt.isPresent(tecniques, tecnique)
+                medium = artwork['Medium']
+                postechnique = lt.isPresent(tecniques_list, medium)
+                artwork_filtrada = {'Title': artwork['Title'],
+                                    'Date': artwork['Date'],
+                                    'Medium': artwork['Medium'],
+                                    'Dimensions': artwork['Dimensions']}
                 
                 if postechnique > 0:
+<<<<<<< HEAD
                     tec = lt.getElement(tecnique,postechnique)
                     lt.addLast(tecniques[tec], artwork)
                 else:
@@ -261,6 +274,23 @@ def getArtistNationality(catalog,artists):
 
                     lt.addLast(nation, artists)
                     lt.addLast(nationalities,nation)
+=======
+                    #tecnique es la tecnica encontrada en la lista de tecnicas
+                    tecnique = lt.getElement(tecniques_list,postechnique)
+                    lt.addLast(tecnique['Artworks'], artwork_filtrada)
+                else: 
+                    #
+                    tec = {'Tecnique': medium,
+                            'Artworks': lt.newList('ARRAY_LIST')}
+
+                    lt.addLast(tec['Artworks'], artwork_filtrada)
+                    lt.addLast(tecniques_list, tec)
+            
+            sortTecnique_size(tecniques_list)
+
+            return tecniques_list, total_obras
+
+>>>>>>> 79d318f92bd6e0e06e1cdc717acc877ada1fab2b
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -270,16 +300,11 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
-    #date_1 = artwork1['DateAcquired'].split("-") 2020-09-10 [2020,09,10]
-    #date_2 = artwork2['DateAcquired'].split("-")
 
     if artwork1['DateAcquired'] != '' and artwork2['DateAcquired'] != '':
 
         date_1 = d.date.fromisoformat(artwork1['DateAcquired'])
         date_2 = d.date.fromisoformat(artwork2['DateAcquired'])
-
-        #d1 = d.datetime(int(date_1[0]),int(date_1[1]),int(date_1[2]))
-        #d2 = d.datetime(int(date_2[0]),int(date_2[1]), int(date_2[2]))
 
         return date_1 < date_2
 
@@ -289,19 +314,25 @@ def cmpartistID(artistid1,artist):
     else:
         return -1
 
-def cmpArtistTecnique(tecnique1, artwork):
+def cmpArtistTecnique(tec1, tec2):
 
-    if (tecnique1.lower() in artwork['Medium'].lower()):
+    if (tec1.lower() == tec2['Tecnique'].lower()):
         return 0 
     else:
         return -1
 
+<<<<<<< HEAD
 def cmpArtistNationality(artist):
 
     if artist["Nationality"] in artist ["Nationality"]:
         return 0 
     else:
         return -1
+=======
+def cmpTecniquesize(tec1,tec2):
+
+    return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
+>>>>>>> 79d318f92bd6e0e06e1cdc717acc877ada1fab2b
 
 # Funciones de ordenamiento
 
@@ -310,12 +341,16 @@ def sortYear_Artist(artist_inrange):
     ms.sort(artist_inrange, cmpartistyear)
 
 
-#def sortYear_Artwork(artwork_inrange):
+def sortYear_Artwork(artwork_inrange):
 
-#        ms.sort(artwork_inrange, cmpartworkyear)
+    ms.sort(artwork_inrange, cmpartworkyear)
+
+def sortTecnique_size(tecnique_list):
+    
+    ms.sort(tecnique_list, cmpTecniquesize)
 
 ##PARTE DEL LABORATORIO
-
+"""
 def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
     
     muestra = lt.subList(catalog['Artwork'], 1, tamano_muestra)
@@ -353,4 +388,4 @@ def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
-        
+"""       
