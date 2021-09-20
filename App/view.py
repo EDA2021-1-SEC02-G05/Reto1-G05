@@ -112,18 +112,19 @@ def printArtworkDate(artworks, año_inicial, año_final):
         print('No se encontraron obras de arte adquiridas en este rango de años')
 
 
-def printArtistTecnique(catalog,tecnique, name):
-    tamano = lt.size(catalog['Artist']['Artworks'])
-    print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
-    tamano_tecnicas = lt.size(tecnique)
-    print('El total de medios utilizados por el artista es: '+str(tamano_tecnicas))
+#def printArtistTecnique(catalog,tecnique, name):
+#    tamano = lt.size(catalog['Artist']['Artworks'])
+#    print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
+#    tamano_tecnicas = lt.size(tecnique)
+#    print('El total de medios utilizados por el artista es: '+str(tamano_tecnicas))#
 
-    for artwork in lt.iterator(tecnique):
-        mayor = None
-        if lt.size(artwork) > lt.size(mayor):
-            mayor = artwork
+#    for artwork in lt.iterator(tecnique):
+#        mayor = None
+#        if lt.size(artwork) > lt.size(mayor):
+#            mayor = artwork
     
-    print('')
+#    print('')
+
 """
 Menu principal
 """
@@ -157,7 +158,7 @@ while True:
         print('Últimos tres artistas cargados:')
         
         for artist in lt.iterator(last_3_artists):
-            print(artist )
+            print(artist)
 
         print()
 
@@ -200,10 +201,15 @@ while True:
         
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
-        printArtistTecnique(catalog, tecniques, name)
+        #printArtistTecnique(catalog, tecniques, name)
 
     elif int(inputs[0]) == 5:
-        pass
+        
+        "Requerimiento 4: clasifica las obras por la nacionalidad de sus creadores"
+        
+        name = input('Nombre de la nacionalidad del artista sobre la cual se quiere realizar la consulta: ')
+        nationalities = controller.getArtistNationality(catalog, name)
+        print(nationalities)
 
     elif int(inputs[0]) == 6:
         pass

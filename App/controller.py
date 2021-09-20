@@ -108,3 +108,8 @@ def getArtistTecnique(catalog,name):
 
     tecnique = model.getArtistTecnique(catalog, name)
     return tecnique
+
+def getArtistNationality(catalog,name):
+
+    nationality = model.getArtistNationality(catalog, name)
+    return nationality

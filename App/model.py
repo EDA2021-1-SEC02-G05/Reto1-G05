@@ -221,7 +221,27 @@ def getArtistTecnique(catalog,name):
                     lt.addLast(tec, artwork)
                     lt.addLast(tecniques,tec)
         break
+
+def getArtistNationality(catalog,nationality):
+    nationalities = lt.newList('ARRAY_LIST', cmpfunction=cmpartistID)
+    
+    for artist in lt.iterator(catalog['Artist']):
+
+        if artist['Nationality'].lower() == nationality.lower():
+
+            for artwork in lt.iterator(artist['Artworks']):
+                national = artwork['ConstituentID']
+                exists = lt.isPresent(nationalities, national)
                 
+                if exists > 0:
+                    n = lt.getElement(national,exists)
+                    lt.addLast(nationalities[n], artwork)
+                else:
+                    n = {national: lt.newList('ARRAY_LIST')}
+
+                    lt.addLast(n[national], artwork)
+                    lt.addLast(nationalities,n)
+        break                
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
