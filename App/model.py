@@ -43,7 +43,7 @@ los mismos.
 
 
 # Construccion de modelos
-def newCatalog(list_type):
+def newCatalog(list_type = 'ARRAY_LIST'):
     """
     Inicializa el catálogo de artistas y obras. Crea una lista vacia para guardar
     todas las obras y artistas del museo, adicionalmente se crea una lista que relaciona las obras de arte con sus artistas y una lista
@@ -105,14 +105,19 @@ def addArtwork(catalog, artwork):
     lt.addLast(catalog['Artwork'], artwork)
     
     addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
-    
+    """
+    A medida que se lee el archivo, se van extrayendo los artists_id para poder crear una lista que relacione 
+    a los artistas con sus obras de arte.
+    """
     artist_id = artwork['ConstituentID'].split(',')
+
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
 
-
 def addArtworkArtist(catalog, artist_id, artwork):
-   
+    """
+    
+    """
     artists = catalog['Artist']
     posartist = lt.isPresent(artists, artist_id)
 
@@ -198,15 +203,40 @@ def getArtworkYear(catalog,año_inicial,año_final):
             lt.addLast(artwork_inrange, artwork )
     sortYear_Artwork(artwork_inrange)
 
-    #print(artwork_inrange)
     return artwork_inrange
 
 def getArtistTecnique(catalog,name):
+    
+    tecniques_list = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
+
+    for artist in lt.iterator(catalog['Artist']):
+        if name.lower() in artist['DisplayName'].lower():
+            total_obras = lt.size(artist['Artworks'])
+            for artwork in lt.iterator(artist['Artworks']):
+                medium = artwork['Medium']
+                postechnique = lt.isPresent(tecniques_list, medium)
+                
+                if postechnique > 0:
+                    #tecnique es la tecnica encontrada en la lista de tecnicas
+                    tecnique = lt.getElement(medium,postechnique)
+                    lt.addLast(tecniques_list[tecnique], artwork)
+                else: 
+                    #
+                    tec = {medium: lt.newList('ARRAY_LIST')}
+
+                    lt.addLast(tec[medium], artwork)
+                    lt.addLast(tecniques_list, tec)
+            return tecniques_list, total_obras
+
+    
+    """
     tecniques = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
     
     for artist in lt.iterator(catalog['Artist']):
 
         if artist['DisplayName'].lower() == name.lower():
+
+            cant_obras = lt.size(artist['Artworks'])
 
             for artwork in lt.iterator(artist['Artworks']):
                 tecnique = artwork['Medium']
@@ -220,7 +250,10 @@ def getArtistTecnique(catalog,name):
 
                     lt.addLast(tec, artwork)
                     lt.addLast(tecniques,tec)
-        break
+            break
+            
+            return tecniques, cant_obras
+    """
                 
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -231,16 +264,11 @@ def cmpartistyear(artist1,artist2):
 
 
 def cmpartworkyear(artwork1,artwork2):
-    #date_1 = artwork1['DateAcquired'].split("-") 2020-09-10 [2020,09,10]
-    #date_2 = artwork2['DateAcquired'].split("-")
 
     if artwork1['DateAcquired'] != '' and artwork2['DateAcquired'] != '':
 
         date_1 = d.date.fromisoformat(artwork1['DateAcquired'])
         date_2 = d.date.fromisoformat(artwork2['DateAcquired'])
-
-        #d1 = d.datetime(int(date_1[0]),int(date_1[1]),int(date_1[2]))
-        #d2 = d.datetime(int(date_2[0]),int(date_2[1]), int(date_2[2]))
 
         return date_1 < date_2
 
@@ -264,12 +292,12 @@ def sortYear_Artist(artist_inrange):
     ms.sort(artist_inrange, cmpartistyear)
 
 
-#def sortYear_Artwork(artwork_inrange):
+def sortYear_Artwork(artwork_inrange):
 
-#        ms.sort(artwork_inrange, cmpartworkyear)
+    ms.sort(artwork_inrange, cmpartworkyear)
 
 ##PARTE DEL LABORATORIO
-
+"""
 def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
     
     muestra = lt.subList(catalog['Artwork'], 1, tamano_muestra)
@@ -307,4 +335,4 @@ def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
-        
+"""       
