@@ -215,46 +215,27 @@ def getArtistTecnique(catalog,name):
             for artwork in lt.iterator(artist['Artworks']):
                 medium = artwork['Medium']
                 postechnique = lt.isPresent(tecniques_list, medium)
+                artwork_filtrada = {'Title': artwork['Title'],
+                                    'Date': artwork['Date'],
+                                    'Medium': artwork['Medium'],
+                                    'Dimensions': artwork['Dimensions']}
                 
                 if postechnique > 0:
                     #tecnique es la tecnica encontrada en la lista de tecnicas
-                    tecnique = lt.getElement(medium,postechnique)
-                    lt.addLast(tecniques_list[tecnique], artwork)
+                    tecnique = lt.getElement(tecniques_list,postechnique)
+                    lt.addLast(tecnique['Artworks'], artwork_filtrada)
                 else: 
                     #
-                    tec = {medium: lt.newList('ARRAY_LIST')}
+                    tec = {'Tecnique': medium,
+                            'Artworks': lt.newList('ARRAY_LIST')}
 
-                    lt.addLast(tec[medium], artwork)
+                    lt.addLast(tec['Artworks'], artwork_filtrada)
                     lt.addLast(tecniques_list, tec)
+            
+            sortTecnique_size(tecniques_list)
+
             return tecniques_list, total_obras
 
-    
-    """
-    tecniques = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
-    
-    for artist in lt.iterator(catalog['Artist']):
-
-        if artist['DisplayName'].lower() == name.lower():
-
-            cant_obras = lt.size(artist['Artworks'])
-
-            for artwork in lt.iterator(artist['Artworks']):
-                tecnique = artwork['Medium']
-                postechnique = lt.isPresent(tecniques, tecnique)
-                
-                if postechnique > 0:
-                    tec = lt.getElement(tecnique,postechnique)
-                    lt.addLast(tecniques[tec], artwork)
-                else:
-                    tec = {tecnique: lt.newList('ARRAY_LIST')}
-
-                    lt.addLast(tec, artwork)
-                    lt.addLast(tecniques,tec)
-            break
-            
-            return tecniques, cant_obras
-    """
-                
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -278,12 +259,16 @@ def cmpartistID(artistid1,artist):
     else:
         return -1
 
-def cmpArtistTecnique(tecnique1, artwork):
+def cmpArtistTecnique(tec1, tec2):
 
-    if (tecnique1.lower() in artwork['Medium'].lower()):
+    if (tec1.lower() == tec2['Tecnique'].lower()):
         return 0 
     else:
         return -1
+
+def cmpTecniquesize(tec1,tec2):
+
+    return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
 
 # Funciones de ordenamiento
 
@@ -295,6 +280,10 @@ def sortYear_Artist(artist_inrange):
 def sortYear_Artwork(artwork_inrange):
 
     ms.sort(artwork_inrange, cmpartworkyear)
+
+def sortTecnique_size(tecnique_list):
+    
+    ms.sort(tecnique_list, cmpTecniquesize)
 
 ##PARTE DEL LABORATORIO
 """

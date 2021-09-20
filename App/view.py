@@ -116,14 +116,14 @@ def printArtistTecnique(tecnique, tamano, name):
     
     print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
     tamano_tecnicas = lt.size(tecnique)
-    print('El total de medios utilizados por el artista es: '+str(tamano_tecnicas))
+    print('El total de medios/tecnicas utilizados por el artista son: '+str(tamano_tecnicas))
 
-    for artwork in lt.iterator(tecnique):
-        mayor = None
-        if lt.size(artwork) > lt.size(mayor):
-            mayor = artwork
+    mayor_tec = lt.getElement(tecnique, 1)
     
-    print('')
+    print('La técnica más utilizada es: '+str(mayor_tec['Tecnique'])+'\n y las obras que la utilizan son: \n')
+
+    for obra in lt.iterator(mayor_tec['Artworks']):
+            print(obra)
 """
 Menu principal
 """
