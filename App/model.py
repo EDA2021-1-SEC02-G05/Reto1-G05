@@ -34,6 +34,7 @@ from DISClib.Algorithms.Sorting import quicksort as qs
 assert cf
 import datetime as d
 import time
+import math
 
 
 """
@@ -304,9 +305,31 @@ def getTransportationCost(catalog, dpto):
 
     for artwork in lt.iterator(artworksBydpto):
 
-        if artwork['']
+        cost_weight=0
+        cost_area=0
+        cost_volume=0
+
+        if artwork['Weight'] != '':
+            cost_weight = int(artwork['Weight'])*72.000
+        
+        if artwork['Lenght'] != '' and artwork['Height'] != '':
+            cost_area = (int(artwork['Lenght'])*int(artwork['Height']))*72.000
+        
+        elif artwork['Diameter'] != '':
+            cost_area = (math.pi*(int(artwork['Diameter'])/2)**2)*72.000
+        
+        if artwork['Lenght'] != '' and artwork['Height'] != '' and artwork['Width'] != '':
+            cost_volume = (int(artwork['Lenght'])*int(artwork['Height'])*int(artwork['Width']))*72.00
+        
+        elif artwork['Diameter'] != '' and artwork['Height'] != '':
+
+            cost_volume = ((math.pi*(int(artwork['Diameter'])/2)**2)*artwork['Height'])*72.00
+        
+        
 
 
+
+        
 
     pass
                     
