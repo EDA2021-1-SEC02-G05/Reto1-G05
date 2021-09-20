@@ -101,7 +101,14 @@ def addArtwork(catalog, artwork):
                     'Dimensions':artwork['Dimensions'],
                     'CreditLine': artwork['CreditLine'], 
                     'Department':artwork['Department'], 
-                    'DateAcquired':artwork['DateAcquired']}
+                    'DateAcquired':artwork['DateAcquired'],
+                    'Weight': artwork['Weight'],
+                    'Circumference': artwork['Circumference'],
+                    'Depth': artwork['Depth'],
+                    'Diameter':artwork['Diameter'],
+                    'Height': artwork['Height'],
+                    'Length': artwork['Length'],
+                    'Width':artwork['Width']}
 
     lt.addLast(catalog['Artwork'], artwork)
     
@@ -231,6 +238,11 @@ def getArtworkYear(catalog,año_inicial,año_final):
     return artwork_inrange
 
 def getArtistTecnique(catalog,name):
+
+    '''
+    Crea una lista nueva donde se van a ir clasificando las obras de arte de un artista según la técnica empleada.
+
+    '''
     
     tecniques_list = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
 
@@ -265,7 +277,7 @@ def getArtistNationality(catalog,artists):
     nationalities = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)         
     for artist in lt.iterator(catalog['Artist']):
         
-        for n in lt.iterator(artists['Nationality']):
+        for n in lt.iterator(artist['Nationality']):
                 nationality = n['Nationality']
                 posnationality = lt.isPresent(nationalities, nationality)
 
@@ -278,6 +290,25 @@ def getArtistNationality(catalog,artists):
                     lt.addLast(nation, artists)
                     lt.addLast(nationalities,nation)
                     #tecnique es la tecnica encontrada en la lista de tecnicas
+
+def getTransportationCost(catalog, dpto):
+
+    transp_cost = lt.newList('ARRAY_LIST')
+    artworksBydpto = lt.newList('ARRAY_LIST')
+
+    for artwork in lt.iterator(catalog['Artwork']):
+
+        if artwork['Department'].lower == dpto.lower():
+
+            lt.addLast(artworksBydpto, artwork)
+
+    for artwork in lt.iterator(artworksBydpto):
+
+        if artwork['']
+
+
+
+    pass
                     
 
 
@@ -334,44 +365,4 @@ def sortYear_Artwork(artwork_inrange):
 def sortTecnique_size(tecnique_list):
     
     ms.sort(tecnique_list, cmpTecniquesize)
-
-##PARTE DEL LABORATORIO
-"""
-def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
-    
-    muestra = lt.subList(catalog['Artwork'], 1, tamano_muestra)
-
-    if algo_ord.lower() == 'merge sort':
-
-        start_time = time.process_time()
-        sorted_list = ms.sort(muestra, cmpartworkyear)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
-
-
-    elif algo_ord.lower() == 'quick sort':
-
-        start_time = time.process_time()
-        sorted_list = qs.sort(muestra, cmpartworkyear)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
-
-       
-    elif algo_ord.lower() == 'shell sort':
-
-        start_time = time.process_time()
-        sorted_list = ss.sort(muestra, cmpartworkyear)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
-
-    elif algo_ord.lower() == 'insertion sort':
-        
-        start_time = time.process_time()
-        sorted_list = iss.sort(muestra, cmpartworkyear)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
-"""       
+      

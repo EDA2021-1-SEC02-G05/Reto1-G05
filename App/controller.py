@@ -126,5 +126,20 @@ def getArtistTecnique(catalog,name):
 
 def getArtistNationality(catalog,artists):
 
+    """
+    REQ 4
+    Llama a la función en el model para poder obtener una lista clasificando las obras por las nacionalidades de sus artistas 
+    """
+
     nationality = model.getArtistNationality(catalog,artists)
     return nationality
+
+def getTransportationCost(catalog,dpto):
+    
+    """
+    REQ 5
+    Llama a la función en el model para poder obtener una lista con los costos asociados a transportar las obras de arte de un dpto especifico
+    """
+
+    transport_cost = model.getTransportationCost(catalog,dpto)
+    return transport_cost

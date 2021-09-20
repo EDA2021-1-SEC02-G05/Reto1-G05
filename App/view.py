@@ -127,6 +127,9 @@ def printArtistTecnique(tecnique, tamano, name):
 
 def printArtworkBynationalities(nationalities):
     pass
+
+def printTransportationCost(transportation, dpto):
+    pass
 """
 Menu principal
 """
@@ -199,7 +202,13 @@ while True:
         
 
     elif int(inputs[0]) == 6:
-        pass
+
+        'Requerimiento 5: transportar obras de un departamento '
+        
+        dpto = input('Ingrese el departamento del que quiere calcular el costo de transporte de sus obras: ')
+        transport = controller.getTransportationCost(catalog, dpto)
+        printTransportationCost(transport, dpto)
+        
 
     elif int(inputs[0]) == 7:
         pass
