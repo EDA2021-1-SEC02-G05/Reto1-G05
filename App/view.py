@@ -112,7 +112,6 @@ def printArtworkDate(artworks, año_inicial, año_final):
         print('No se encontraron obras de arte adquiridas en este rango de años')
 
 
-<<<<<<< HEAD
 #def printArtistTecnique(catalog,tecnique, name):
 #    tamano = lt.size(catalog['Artist']['Artworks'])
 #    print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
@@ -126,7 +125,6 @@ def printArtworkDate(artworks, año_inicial, año_final):
     
 #    print('')
 
-=======
 def printArtistTecnique(tecnique, tamano, name):
     
     print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
@@ -139,7 +137,6 @@ def printArtistTecnique(tecnique, tamano, name):
 
     for obra in lt.iterator(mayor_tec['Artworks']):
             print(obra)
->>>>>>> 79d318f92bd6e0e06e1cdc717acc877ada1fab2b
 """
 Menu principal
 """
@@ -213,11 +210,8 @@ while True:
         
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
-<<<<<<< HEAD
         #printArtistTecnique(catalog, tecniques, name)
-=======
         printArtistTecnique( tecniques[0],tecniques[1], name)
->>>>>>> 79d318f92bd6e0e06e1cdc717acc877ada1fab2b
 
     elif int(inputs[0]) == 5:
         
