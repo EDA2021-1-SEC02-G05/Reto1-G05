@@ -112,19 +112,6 @@ def printArtworkDate(artworks, año_inicial, año_final):
         print('No se encontraron obras de arte adquiridas en este rango de años')
 
 
-#def printArtistTecnique(catalog,tecnique, name):
-#    tamano = lt.size(catalog['Artist']['Artworks'])
-#    print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
-#    tamano_tecnicas = lt.size(tecnique)
-#    print('El total de medios utilizados por el artista es: '+str(tamano_tecnicas))#
-
-#    for artwork in lt.iterator(tecnique):
-#        mayor = None
-#        if lt.size(artwork) > lt.size(mayor):
-#            mayor = artwork
-    
-#    print('')
-
 def printArtistTecnique(tecnique, tamano, name):
     
     print('Se encontraron ' + str(tamano) + ' obras del artista ' + name)
@@ -137,6 +124,9 @@ def printArtistTecnique(tecnique, tamano, name):
 
     for obra in lt.iterator(mayor_tec['Artworks']):
             print(obra)
+
+def printArtworkBynationalities(nationalities):
+    pass
 """
 Menu principal
 """
@@ -175,15 +165,6 @@ while True:
 
     elif int(inputs[0]) == 2:
 
-        #PARTE DEL LAB
-
-        #tamano_muestra = int(input('Tamaño de la muestra que desea utilizar: '))
-
-        #if tamano_muestra > lt.size(catalog['Artwork']):
-        #    tamano_muestra = int(input('El tamaño que escogió es muy grande, elija una muestra menor a '+ str(lt.size(catalog['Artwork']))+ ': '))
-
-        #algo_ord = input('Tipo de algoritmo de ordenamiento que desea utilizar (merge sort, insertion sort, quick sort o shell sort): ')
-
         "Requerimiento 1: artistas por fecha de nacimiento"
 
         año_inicial = int(input('Año inicial para el rango de busqueda: '))
@@ -193,9 +174,6 @@ while True:
 
     elif int(inputs[0]) == 3:
 
-        #ordenamiento = controller.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
-
-        #print("Para la muestra de", tamano_muestra, " elementos, el tiempo (mseg) es: ", str(round(ordenamiento[0], 2)))
 
         "Requerimiento 2: obras de arte por fecha de adquisición"
 
@@ -210,7 +188,6 @@ while True:
         
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
-        #printArtistTecnique(catalog, tecniques, name)
         printArtistTecnique( tecniques[0],tecniques[1], name)
 
     elif int(inputs[0]) == 5:
@@ -218,6 +195,7 @@ while True:
         "Requerimiento 4: clasifica las obras por la nacionalidad de sus creadores"
         
         nationalities = controller.getArtistNationality(catalog,artist)
+        printArtworkBynationalities(nationalities)
         
 
     elif int(inputs[0]) == 6:
