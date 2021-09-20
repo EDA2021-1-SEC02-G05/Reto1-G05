@@ -207,9 +207,8 @@ while True:
         
         "Requerimiento 4: clasifica las obras por la nacionalidad de sus creadores"
         
-        name = input('Nombre de la nacionalidad del artista sobre la cual se quiere realizar la consulta: ')
-        nationalities = controller.getArtistNationality(catalog, name)
-        print(nationalities)
+        nationalities = controller.getArtistNationality(catalog,artist)
+        
 
     elif int(inputs[0]) == 6:
         pass

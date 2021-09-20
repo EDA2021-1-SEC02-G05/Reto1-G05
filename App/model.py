@@ -63,6 +63,7 @@ def newCatalog(list_type):
 
     catalog['ArtworkDate'] = lt.newList(list_type,
                                  cmpfunction="")
+    
 
     return catalog
 
@@ -110,6 +111,30 @@ def addArtwork(catalog, artwork):
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
 
+def addNationality(catalog,artists):
+    """
+    Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artists.csv y
+    con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
+    """
+
+    nationality = {'Nationality':artists['Nationality'],
+                    'Artworks':lt.newList('ARRAY_LIST')}
+                    
+    lt.addLast(catalog['Nationality'], nationality) 
+
+    nationalities = nationality['Nationality'].split(',')
+    for place in nationalities:
+        addArtworkNationality(catalog, place, nationality)
+
+    print(nationality)
+def addArtworkNationality(catalog, nationalities, nationality):
+   
+    nations = catalog['Artist']
+    postnationality = lt.isPresent(nations, nationalities)
+
+    if postnationality > 0:
+        nationality = lt.getElement(nations, postnationality)
+        lt.addLast(nationality['Artworks'], nationality)
 
 def addArtworkArtist(catalog, artist_id, artwork):
    
@@ -130,13 +155,11 @@ def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
 
 def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline):
     
-    
     if date != '' :
         
         adate = newArtworkDate(artwork,date, artist, medio, dimensions, creditline)
 
         lt.addLast(catalog['ArtworkDate'],adate)
-    
 
 # Funciones para creacion de datos
 
@@ -222,26 +245,22 @@ def getArtistTecnique(catalog,name):
                     lt.addLast(tecniques,tec)
         break
 
-def getArtistNationality(catalog,nationality):
-    nationalities = lt.newList('ARRAY_LIST', cmpfunction=cmpartistID)
-    
+def getArtistNationality(catalog,artists):
+    nationalities = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)         
     for artist in lt.iterator(catalog['Artist']):
+        
+        for n in lt.iterator(artists['Nationality']):
+                nationality = n['Nationality']
+                posnationality = lt.isPresent(nationalities, nationality)
 
-        if artist['Nationality'].lower() == nationality.lower():
-
-            for artwork in lt.iterator(artist['Artworks']):
-                national = artwork['ConstituentID']
-                exists = lt.isPresent(nationalities, national)
-                
-                if exists > 0:
-                    n = lt.getElement(national,exists)
-                    lt.addLast(nationalities[n], artwork)
+                if posnationality > 0:
+                    nation = lt.getElement(nationality,posnationality)
+                    lt.addLast(nationalities[nation], artists)
                 else:
-                    n = {national: lt.newList('ARRAY_LIST')}
+                    nation = {nationality: lt.newList('ARRAY_LIST')}
 
-                    lt.addLast(n[national], artwork)
-                    lt.addLast(nationalities,n)
-        break                
+                    lt.addLast(nation, artists)
+                    lt.addLast(nationalities,nation)
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -273,6 +292,13 @@ def cmpartistID(artistid1,artist):
 def cmpArtistTecnique(tecnique1, artwork):
 
     if (tecnique1.lower() in artwork['Medium'].lower()):
+        return 0 
+    else:
+        return -1
+
+def cmpArtistNationality(artist):
+
+    if artist["Nationality"] in artist ["Nationality"]:
         return 0 
     else:
         return -1
