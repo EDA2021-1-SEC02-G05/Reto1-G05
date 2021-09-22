@@ -161,10 +161,6 @@ def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
 
 def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline):
 
-    #posartist = lt.isPresent(catalog['ArtworkArtist'], artist)
-
-
-    #artist_list = lt.getElement(catalog['ArtworkArtist'],posartist)
 
     if date != '' :
         
@@ -308,6 +304,7 @@ def getArtistNationality(catalog):
 def getTransportationCost(catalog, dpto):
     start_time = time.process_time()
     costo_total = 0
+    peso_total = 0
     transp_cost = lt.newList('ARRAY_LIST')
     artworksBydpto = lt.newList('ARRAY_LIST')
 
@@ -336,7 +333,7 @@ def getTransportationCost(catalog, dpto):
         cost_vol = round(((cost_volume(artwork))/1000000),2)
 
         if cost_weight == 0 and cost_a == 0 and cost_vol == 0:
-            costo_total =+ 48.00
+            costo_total  += 48.00
             cost = {'Artwork':artwork_filtrada, 
                     'Cost':48.00}
 
@@ -344,7 +341,8 @@ def getTransportationCost(catalog, dpto):
 
         elif cost_weight > cost_vol and cost_weight > cost_a:
             
-                costo_total =+ cost_weight
+                costo_total  += cost_weight
+                peso_total += weight
                 cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_weight}
 
@@ -352,7 +350,8 @@ def getTransportationCost(catalog, dpto):
 
         elif cost_a > cost_weight and cost_a > cost_vol:
             
-                costo_total =+ cost_a
+                costo_total += cost_a
+                peso_total += weight
                 cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_a}
 
@@ -360,7 +359,8 @@ def getTransportationCost(catalog, dpto):
 
         elif cost_vol > cost_a and cost_vol > cost_weight:
 
-                costo_total =+ cost_vol
+                costo_total  += cost_vol
+                peso_total += weight
                 cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_vol}
 
@@ -371,7 +371,7 @@ def getTransportationCost(catalog, dpto):
     sortTransportation(transp_cost)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
-    return transp_cost, costo_total, copy, elapsed_time_mseg
+    return transp_cost, elapsed_time_mseg,round(costo_total,2), copy, round(peso_total, 2)
     
 def cost_Area(artwork):
     pi = math.pi
@@ -512,7 +512,7 @@ def cmpArtistNationality(artist1, artist2):
 def cmpTecniquesize(tec1,tec2):
 
     return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
-####
+
 def cmpNationalitysize(nat1,nat2):
 
     return (lt.size(nat1['Artworks'])) > (lt.size(nat2['Artworks']))
@@ -540,7 +540,6 @@ def sortYear_Artwork(artwork_inrange):
 def sortTecnique_size(tecnique_list):
     
     ms.sort(tecnique_list, cmpTecniquesize)
-####
 def sortNationalitysize(nationalities):
     
     ms.sort(nationalities, cmpNationalitysize)
