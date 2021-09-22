@@ -80,7 +80,7 @@ def addArtist(catalog,artists):
                     'BeginDate':int(artists['BeginDate']),
                     'EndDate':artists['EndDate'],
                     'Artworks':lt.newList('ARRAY_LIST')}
-                    
+
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
 
     lt.addLast(catalog['Artist'], artist) 
@@ -150,11 +150,11 @@ def addArtworkArtist(catalog, artist_id, artwork):
         artist = lt.getElement(artists, posartist)
     
         lt.addLast(artist['Artworks'], artwork)
+
+
     
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
-
-    
     
     if int(date) != 0 :
         adate = newArtistDate(artist,date, deathdate, nationality, gender )
