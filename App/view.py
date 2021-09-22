@@ -235,7 +235,7 @@ while True:
 
 
         "Requerimiento 2: obras de arte por fecha de adquisición"
-        #TODO:arreglar que salga nombre de artista
+   
 
         año_inicial = (input('Año inicial para el rango de busqueda: '))
         año_final = (input('Año final para el rango de busqueda: '))
@@ -256,7 +256,7 @@ while True:
     elif int(inputs[0]) == 5:
         
         "Requerimiento 4: clasifica las obras por la nacionalidad de sus creadores"
-        #TODO:arreglar que salga nombre de artista
+  
         
         nationalities = controller.getArtistNationality(catalog)
         printArtworkBynationalities(nationalities[0],nationalities[1] )
@@ -265,7 +265,7 @@ while True:
     elif int(inputs[0]) == 6:
 
         'Requerimiento 5: transportar obras de un departamento '
-        #TODO:arreglar que salga nombre de artista
+
         
         dpto = input('Ingrese el departamento del que quiere calcular el costo de transporte de sus obras: ')
         transport = controller.getTransportationCost(catalog, dpto)

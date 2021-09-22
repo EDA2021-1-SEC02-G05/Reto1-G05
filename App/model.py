@@ -52,7 +52,7 @@ def newCatalog(list_type = 'ARRAY_LIST'):
                                  cmpfunction=""),
                 }
 
-    catalog['Artwork'] = lt.newList(list_type, cmpfunction=cmpartistID)
+    catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
                                     cmpfunction=cmpartistID)
     catalog['ArtistDate'] = lt.newList(list_type,
@@ -77,7 +77,7 @@ def addArtist(catalog,artists):
                     'DisplayName': (artists['DisplayName']).lower(),
                     'Nationality':(artists['Nationality']).lower(),
                     'Gender':(artists['Gender']).lower(),
-                    'BeginDate':int(artists['BeginDate']),
+                    'BeginDate':artists['BeginDate'],
                     'EndDate':artists['EndDate'],
                     'Artworks':lt.newList('ARRAY_LIST')}
 
@@ -95,7 +95,7 @@ def addArtwork(catalog, artwork):
     """
 
 
-    artwork = {'ObjectID':int(artwork['ObjectID']), 
+    artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':(artwork['Title']).lower(), 
                     'ConstituentID':artwork['ConstituentID'][1:-1],
                     'Artists':lt.newList('ARRAY_LIST'),
@@ -115,36 +115,18 @@ def addArtwork(catalog, artwork):
                     'Width':artwork['Width (cm)']}
 
     lt.addLast(catalog['Artwork'], artwork)
-    
-    artistName = addNameConstituentID(catalog,artwork)
 
     addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['Artists'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
 
-    lt.addLast(catalog['Artwork'], artistName)
-
-def addArtistartwork(catalog, artist_id, artwork):
-    artists = catalog['Artist']
-    posartist = lt.isPresent(artists, artist_id)
-
-    if posartist > 0:
-        artist = lt.getElement(artists, posartist)
-        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
-                                'ConstituentID':artist_id,
-                                'Title':artwork['Title'],
-                                'DisplayName': artist['DisplayName']}
-        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
-
-def addNameConstituentID(catalog,artwork):
     """
     A medida que se lee el archivo, se van extrayendo los artists_id para poder crear una lista que relacione 
     a los artistas con sus obras de arte.
     """
+
     artist_id = artwork['ConstituentID'].split(',')
 
     for id in artist_id:
-        addArtworkArtist(catalog, id, artwork)
-
-    
+        addArtworkArtist(catalog, id, artwork)   
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
