@@ -81,14 +81,7 @@ def sortYear_Artwork(catalog):
     Ordena a las obras de arte por fecha de adquisición
     """
     model.sortYear_Artwork(catalog)
-    
 
-#PARTE DEL LAB
-
-#def sortYear_Artwork(catalog, algo_ord, tamano_muestra):
-    
-#    return model.sortYear_Artwork(catalog, algo_ord, tamano_muestra)
-    
 
 # Funciones de consulta sobre el catálogo
 

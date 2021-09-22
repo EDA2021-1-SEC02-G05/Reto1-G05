@@ -126,6 +126,14 @@ def printArtistTecnique(tecnique, tamano, name):
             print("Titulo: " + artwork["Title"] + ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
 
 def printArtworkBynationalities(nationalities):
+    print('Las 10 nacionalidades con mayor número de obras son: ')
+
+    top10 = lt.subList(nationalities,1, 10)
+
+    for nacionalidad in lt.iterator(top10):
+        tamano = lt.size(nacionalidad['Artworks'])
+        print(nacionalidad['Nationality']+': '+ str(tamano))
+
     pass
 
 def printTransportationCost(transportation, dpto, total, old):
@@ -153,7 +161,6 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        
         
         print("Cargando información de los archivos ...\n")
         catalog = initCatalog()
@@ -189,7 +196,7 @@ while True:
         año_inicial = int(input('Año inicial para el rango de busqueda: '))
         año_final = int(input ('Año final para el rango de busqueda: '))
         artist = controller.getArtistYear(catalog, año_inicial, año_final)
-        printArtistDate(artist, año_inicial, año_final )
+        printArtistDate(artist[0], año_inicial, año_final )
 
     elif int(inputs[0]) == 3:
 
@@ -200,7 +207,7 @@ while True:
         año_inicial = (input('Año inicial para el rango de busqueda: '))
         año_final = (input('Año final para el rango de busqueda: '))
         artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
-        printArtworkDate(artwork, año_inicial, año_final )
+        printArtworkDate(artwork[0], año_inicial, año_final )
 
     elif int(inputs[0]) == 4:
 
@@ -213,14 +220,16 @@ while True:
     elif int(inputs[0]) == 5:
         
         "Requerimiento 4: clasifica las obras por la nacionalidad de sus creadores"
+        #TODO:arreglar que salga nombre de artista
         
         nationalities = controller.getArtistNationality(catalog)
-        print(nationalities)
+        printArtworkBynationalities(nationalities)
         
 
     elif int(inputs[0]) == 6:
 
         'Requerimiento 5: transportar obras de un departamento '
+        #TODO:arreglar que salga nombre de artista
         
         dpto = input('Ingrese el departamento del que quiere calcular el costo de transporte de sus obras: ')
         transport = controller.getTransportationCost(catalog, dpto)

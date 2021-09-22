@@ -199,7 +199,7 @@ def newArtworkDate(artwork, date, artist, medio, dimensions, creditline):
 
 # Funciones de consulta
 def getArtistYear(catalog,año_inicial,año_final):
-
+    start_time = time.process_time()
     artist_inrange = lt.newList("ARRAY_LIST")
 
     for artist in lt.iterator(catalog['ArtistDate']):
@@ -209,10 +209,13 @@ def getArtistYear(catalog,año_inicial,año_final):
             lt.addLast(artist_inrange, artist)
 
     sortYear_Artist(artist_inrange)
-    return artist_inrange
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return artist_inrange, elapsed_time_mseg
 
     
 def getArtworkYear(catalog,año_inicial,año_final):
+    start_time = time.process_time()
 
     artwork_inrange = lt.newList("ARRAY_LIST")
     
@@ -231,15 +234,16 @@ def getArtworkYear(catalog,año_inicial,año_final):
     
             lt.addLast(artwork_inrange, artwork )
     sortYear_Artwork(artwork_inrange)
-
-    return artwork_inrange
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return artwork_inrange, elapsed_time_mseg
 
 def getArtistTecnique(catalog,name):
 
     '''
     Crea una lista nueva donde se van a ir clasificando las obras de arte de un artista según la técnica empleada.
     '''
-    
+    start_time = time.process_time()
     tecniques_list = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
 
     for artist in lt.iterator(catalog['Artist']):
@@ -257,7 +261,7 @@ def getArtistTecnique(catalog,name):
                     tecnique = lt.getElement(tecniques_list,postechnique)
                     lt.addLast(tecnique['Artworks'], artwork_filtrada)
                 else: 
-                    #
+                    
                     tec = {'Tecnique': medium,
                             'Artworks': lt.newList('ARRAY_LIST')}
 
@@ -265,8 +269,9 @@ def getArtistTecnique(catalog,name):
                     lt.addLast(tecniques_list, tec)
             
             sortTecnique_size(tecniques_list)
-
-            return tecniques_list, total_obras
+            stop_time = time.process_time()
+            elapsed_time_mseg = (stop_time - start_time)*1000
+            return tecniques_list, total_obras, elapsed_time_mseg
 
 
 def getArtistNationality(catalog):
@@ -283,7 +288,7 @@ def getArtistNationality(catalog):
         artist_artworks = artist['Artworks']
         if nation > 0:
             nation_works = lt.getElement(nationality_artworks,nation)
-            lt.addLast(nationality_list, nationality)
+            #lt.addLast(nationality_list, nationality)
         else:
             nation_works = {'Nationality': nationality,
                              'Artworks': lt.newList('ARRAY_LIST') } 
@@ -298,10 +303,10 @@ def getArtistNationality(catalog):
 
 
 def getTransportationCost(catalog, dpto):
+    start_time = time.process_time()
     costo_total = 0
     transp_cost = lt.newList('ARRAY_LIST')
     artworksBydpto = lt.newList('ARRAY_LIST')
-
 
     for artwork in lt.iterator(catalog['Artwork']):
 
@@ -361,7 +366,9 @@ def getTransportationCost(catalog, dpto):
     copy=lt.subList(transp_cost,1,lt.size(transp_cost))
     sortTranspOld(copy)
     sortTransportation(transp_cost)
-    return transp_cost, costo_total, copy
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return transp_cost, costo_total, copy, elapsed_time_mseg
     
 def cost_Area(artwork):
     pi = math.pi
