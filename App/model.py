@@ -275,6 +275,9 @@ def getArtistTecnique(catalog,name):
 
 
 def getArtistNationality(catalog):
+    '''
+    Crea una lista nueva donde se  clasifican las obras de arte  según la nacionalidad del artista.
+    '''
     start_time = time.process_time()
 
     nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
@@ -282,8 +285,8 @@ def getArtistNationality(catalog):
     for artist in lt.iterator(catalog['Artist']):
         
         nationality = artist['Nationality']   
-        if nationality == "":
-            nationality = "desconocido"
+        if nationality == "" or nationality == "Nationality unknown":
+            nationality = "Unknown"
     
         nation = lt.isPresent(nationality_artworks, nationality)
         artist_artworks = artist['Artworks']
