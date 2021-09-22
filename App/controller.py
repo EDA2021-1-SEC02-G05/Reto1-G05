@@ -136,3 +136,13 @@ def getTransportationCost(catalog,dpto):
 
     transport_cost = model.getTransportationCost(catalog,dpto)
     return transport_cost
+###es solo para probar
+def AddArtwork(catalog,artwork):
+    
+    """
+    REQ 5
+    Llama a la función en el model para poder obtener una lista con los costos asociados a transportar las obras de arte de un dpto especifico
+    """
+
+    transport_cost = model.addArtwork(catalog, artwork)
+    return transport_cost
