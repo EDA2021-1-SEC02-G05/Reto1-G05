@@ -122,8 +122,8 @@ def printArtistTecnique(tecnique, tamano, name):
     
     print('La técnica más utilizada es: '+str(mayor_tec['Tecnique'])+'\n y las obras que la utilizan son: \n')
 
-    for obra in lt.iterator(mayor_tec['Artworks']):
-            print(obra)
+    for artwork in lt.iterator(mayor_tec['Artworks']):
+            print("Titulo: " + artwork["Title"] + ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
 
 def printArtworkBynationalities(nationalities):
     pass
@@ -137,13 +137,13 @@ def printTransportationCost(transportation, dpto, total, old):
     top5_viejas = lt.subList(old, 1, 5 )
     print('\n Las 5 obras más antiguas a transportar son: \n')
     for artwork in lt.iterator(top5_viejas):
-        print("Title: " + artwork['Artwork']["Title"] + ", Artists: " + artwork['Artwork']["Artist/s"] + ", Classification : " + artwork['Artwork']["Classification"] + ", Date: "+ artwork['Artwork']["Date"] + ", Medium: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", TranspCost: " + str(artwork["Cost"]) + '\n')
+        print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: " + artwork['Artwork']["Artist/s"] + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"]) + '\n')
     
     top5_costosas = lt.subList(transportation, 1 , 5)
     print('\n Las 5 obras más costosas de transportar son: \n')
 
     for artwork in lt.iterator(top5_costosas):
-        print("Title: " + artwork['Artwork']["Title"] + ", Artists: " + artwork['Artwork']["Artist/s"] + ", Classification : " + artwork['Artwork']["Classification"] + ", Date: "+ artwork['Artwork']["Date"] + ", Medium: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", TranspCost: " + str(artwork["Cost"])+ '\n')
+        print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: " + artwork['Artwork']["Artist/s"] + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"])+ '\n')
     
 
 """
