@@ -277,42 +277,6 @@ def getArtistTecnique(catalog,name):
 
 
 def getArtistNationality(catalog):
-    """
-    nationality_list = lt.newList('ARRAY_LIST')        
-    #print(lt.size(catalog["Artist"])) 
-    
-    for artist in lt.iterator(catalog['Artist']):
-        total_obras = lt.size(artist['Artworks'])
-        nationality = artist['Nationality']   
-        if nationality == "":
-            nationality = "Unknown"
-        
-        nation = lt.isPresent(nationality_list, nationality)
-        
-        nation_works = dict()
-        if nation > 0:
-            nation = lt.getElement(nationality_list,nation)
-            lt.addLast(nationality_list, nationality)
-
-            nation_works = {'Nationality': nationality,
-                              'Artworks': lt.newList('ARRAY_LIST')} 
-            
-        else:
-            nation_works = {'Nationality': nationality,
-                            } 
-            
-            #lt.addLast(nation_works['Artworks'], artist['Artworks'])
-            lt.addLast(nationality_list, nationality)
-    
-    for name in nationality_list:
-        nation_works = {'Nationality': name,
-                        'Artworks': (artist['Artworks'])} 
-        lt.addLast(nation_works['Artworks'], artist['Artworks'])
-        lt.addLast(nationality_list, nation_works)
-        print(nation_works)
-    """
-    
-    #lo que se hizo hoy
       
     nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
     #print(lt.size(catalog["Artist"])) 
@@ -339,31 +303,6 @@ def getArtistNationality(catalog):
         for work in lt.iterator(artist_artworks):
             lt.addLast(nation_works["Artworks"], work)
 
-    
-    """
-        for artwork in lt.iterator(artist['Artworks']):         
-                nationality = artist['Nationality']
-                nation_works = lt.newList("ARRAY_LIST")
-                posnationality = lt.isPresent(nationalities, nationality)
-                artwork_filtrada = {'Title': artwork['Title'],
-                                    'Artist': artist['DisplayName'],
-                                    'Date': artwork['Date'],
-                                    'Medium': artwork['Medium'],
-                                    'Dimensions': artwork['Dimensions']}
-                #print(artwork_filtrada)
-                if posnationality > 0:
-                    nation = lt.getElement(nationality,posnationality)
-                    lt.addLast(nation['Artworks'], artwork_filtrada)
-                else:
-                    #print(nationality)
-                    nation_works = {'Nationality': nationality,
-                              'Artworks': lt.newList('ARRAY_LIST')}
-
-                    lt.addLast(nation_works, artist)
-                    lt.addLast(nationalities,nation_works)
-            
-        #sortNationality_size(nationalities)
-        """""
     return nationality_artworks
             
 def getTransportationCost(catalog, dpto):
