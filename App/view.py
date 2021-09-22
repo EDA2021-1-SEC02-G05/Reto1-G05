@@ -88,10 +88,10 @@ def printArtworkDate(artworks,tiempo, año_inicial, año_final):
     
     tamano = lt.size(artworks)
 
-    first_3_artworks = lt.subList(artworks, 1, 3 )
-    last_3_artworks = lt.subList(artworks, tamano - 2, 3)
 
     if tamano > 0:
+        first_3_artworks = lt.subList(artworks, 1, 3 )
+        last_3_artworks = lt.subList(artworks, tamano - 2, 3)
 
         print ('Se encontraron ' + str(tamano) + ' obras de arte adquiridas en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
         cont = 0
@@ -245,10 +245,9 @@ while True:
         
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
-        if tecniques != None:
-            printArtistTecnique( tecniques[0],tecniques[2],tecniques[1], name)
-        else:
-            print('No se encontró tal artista')
+
+        printArtistTecnique( tecniques[0],tecniques[2],tecniques[1], name)
+
 
     elif int(inputs[0]) == 5:
         
