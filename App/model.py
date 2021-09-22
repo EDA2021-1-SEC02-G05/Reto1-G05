@@ -116,12 +116,33 @@ def addArtwork(catalog, artwork):
     lt.addLast(catalog['Artwork'], artwork)
     
     addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
+    
+    artistName = addNameCostrituentID(catalog,artwork)
+    lt.addLast(catalog['Artwork'], artistName)
+
+def addArtistartwork(catalog, artist_id, artwork):
+    artists = catalog['Artist']
+    posartist = lt.isPresent(artists, artist_id)
+
+    if posartist > 0:
+        artist = lt.getElement(artists, posartist)
+        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
+                                'ConstituentID':artist_id,
+                                'Title':artwork['Title'],
+                                'DisplayName': artist['DisplayName']}
+        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
+
+def addNameCostrituentID(catalog,artwork):
     """
     A medida que se lee el archivo, se van extrayendo los artists_id para poder crear una lista que relacione 
     a los artistas con sus obras de arte.
     """
     artist_id = artwork['ConstituentID'].split(',')
 
+<<<<<<< HEAD
+    for id in artist_id:
+        addArtworkArtist(catalog, id, artwork)
+=======
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
         #
@@ -138,6 +159,7 @@ def addartistartwork(catalog, artist_id, artwork):
                                 'Title':artwork['Title'],
                                 'DisplayName': artist['DisplayName']}
         lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
+>>>>>>> d23b3c0fe48e699379c54b5c660e41c6b381972b
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
@@ -272,6 +294,9 @@ def getArtistTecnique(catalog,name):
 
 
 def getArtistNationality(catalog):
+    '''
+    Crea una lista nueva donde se  clasifican las obras de arte  según la nacionalidad del artista.
+    '''
     start_time = time.process_time()
 
     nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
@@ -279,8 +304,8 @@ def getArtistNationality(catalog):
     for artist in lt.iterator(catalog['Artist']):
         
         nationality = artist['Nationality']   
-        if nationality == "":
-            nationality = "desconocido"
+        if nationality == "" or nationality == "Nationality unknown":
+            nationality = "Unknown"
     
         nation = lt.isPresent(nationality_artworks, nationality)
         artist_artworks = artist['Artworks']
