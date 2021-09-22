@@ -92,7 +92,7 @@ def printArtworkDate(artworks, año_inicial, año_final):
     if tamano > 0:
 
         print ('Se encontraron ' + str(tamano) + ' obras de arte adquiridas en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
-        cont = 1
+        cont = 0
         for artwork in lt.iterator(artworks):
             
             if 'purchase' in artwork['CreditLine'].lower():
@@ -128,8 +128,23 @@ def printArtistTecnique(tecnique, tamano, name):
 def printArtworkBynationalities(nationalities):
     pass
 
-def printTransportationCost(transportation, dpto):
-    pass
+def printTransportationCost(transportation, dpto, total, old):
+    tamano = lt.size(transportation)
+
+
+    print('El total de obras a transporte del departamento seleccionado es: '+str(tamano)+'\n')
+    print('\n El estimado total en USD para el costo del servicio es: '+ str(total)+'\n')
+    top5_viejas = lt.subList(old, 1, 5 )
+    print('Las 5 obras más antiguas a transportar son: \n')
+    for obra_vieja in lt.iterator(top5_viejas):
+        print(obra_vieja)
+    
+    top5_costosas = lt.subList(transportation, 1 , 5)
+    print('Las 5 obras más costosas de transportar son: \n')
+
+    for obra_costosa in lt.iterator(top5_costosas):
+        print(obra_costosa)
+
 """
 Menu principal
 """
@@ -146,8 +161,8 @@ while True:
         tamano_artwork = lt.size(catalog['Artwork'])
         tamano_artist = lt.size(catalog['Artist'])
 
-        last_3_artworks = lt.subList(catalog['Artwork'], tamano_artwork - 3, 3 )
-        last_3_artists = lt.subList(catalog['Artist'], tamano_artist - 3, 3)
+        last_3_artworks = lt.subList(catalog['Artwork'], tamano_artwork - 2, 3 )
+        last_3_artists = lt.subList(catalog['Artist'], tamano_artist - 2, 3)
 
         print('Obras de arte cargadas: ' + str(tamano_artwork)+'\n')
         print('Artistas cargados: ' + str(tamano_artist)+ '\n')
@@ -179,6 +194,7 @@ while True:
 
 
         "Requerimiento 2: obras de arte por fecha de adquisición"
+        #TODO:arreglar que salga nombre de artista
 
         año_inicial = (input('Año inicial para el rango de busqueda: '))
         año_final = (input('Año final para el rango de busqueda: '))
@@ -207,7 +223,7 @@ while True:
         
         dpto = input('Ingrese el departamento del que quiere calcular el costo de transporte de sus obras: ')
         transport = controller.getTransportationCost(catalog, dpto)
-        printTransportationCost(transport, dpto)
+        printTransportationCost(transport[0], dpto,transport[1], transport[2])
         
 
     elif int(inputs[0]) == 7:
