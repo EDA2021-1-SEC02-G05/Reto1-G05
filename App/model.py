@@ -73,12 +73,12 @@ def addArtist(catalog,artists):
     con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
     """
 
-    artist = {'ConstituentID':int(artists['ConstituentID']),
+    artist = {'ConstituentID':artists['ConstituentID'],
                     'DisplayName': (artists['DisplayName']).lower(),
                     'Nationality':(artists['Nationality']).lower(),
                     'Gender':(artists['Gender']).lower(),
                     'BeginDate':int(artists['BeginDate']),
-                    'EndDate':int(artists['EndDate']),
+                    'EndDate':artists['EndDate'],
                     'Artworks':lt.newList('ARRAY_LIST')}
                     
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
@@ -97,21 +97,21 @@ def addArtwork(catalog, artwork):
 
     artwork = {'ObjectID':int(artwork['ObjectID']), 
                     'Title':(artwork['Title']).lower(), 
-                    'ConstituentID':int(artwork['ConstituentID'][1:-1]),
-                    'Date': int(artwork[ 'Date']),
+                    'ConstituentID':artwork['ConstituentID'][1:-1],
+                    'Date': artwork[ 'Date'],
                     'Medium':(artwork['Medium']).lower(), 
                     'Classification': (artwork['Classification']).lower(),
                     'Dimensions':artwork['Dimensions'],
                     'CreditLine': (artwork['CreditLine']).lower(), 
                     'Department':(artwork['Department']).lower(), 
                     'DateAcquired':artwork['DateAcquired'],
-                    'Weight': float(artwork['Weight (kg)']),
-                    'Circumference': float(artwork['Circumference (cm)']),
-                    'Depth': float(artwork['Depth (cm)']),
-                    'Diameter':float(artwork['Diameter (cm)']),
-                    'Height': float(artwork['Height (cm)']),
-                    'Length': float(artwork['Length (cm)']),
-                    'Width':float(artwork['Width (cm)'])}
+                    'Weight': artwork['Weight (kg)'],
+                    'Circumference': artwork['Circumference (cm)'],
+                    'Depth': artwork['Depth (cm)'],
+                    'Diameter':artwork['Diameter (cm)'],
+                    'Height': artwork['Height (cm)'],
+                    'Length': artwork['Length (cm)'],
+                    'Width':artwork['Width (cm)']}
 
     lt.addLast(catalog['Artwork'], artwork)
     
@@ -139,8 +139,27 @@ def addNameCostrituentID(catalog,artwork):
     """
     artist_id = artwork['ConstituentID'].split(',')
 
+<<<<<<< HEAD
     for id in artist_id:
         addArtworkArtist(catalog, id, artwork)
+=======
+    for artist in artist_id:
+        addArtworkArtist(catalog, artist, artwork)
+        #
+        # 3addartistartwork(catalog, artist, artwork)
+
+def addartistartwork(catalog, artist_id, artwork):
+    artists = catalog['Artist']
+    posartist = lt.isPresent(artists, artist_id)
+
+    if posartist > 0:
+        artist = lt.getElement(artists, posartist)
+        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
+                                'ConstituentID':artist_id,
+                                'Title':artwork['Title'],
+                                'DisplayName': artist['DisplayName']}
+        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
+>>>>>>> d23b3c0fe48e699379c54b5c660e41c6b381972b
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
@@ -152,7 +171,7 @@ def addArtworkArtist(catalog, artist_id, artwork):
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
     
-    lt.addLast(artist['Artworks'], artwork)
+        lt.addLast(artist['Artworks'], artwork)
     
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
