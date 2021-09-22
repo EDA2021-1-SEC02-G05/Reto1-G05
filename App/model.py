@@ -123,34 +123,7 @@ def addArtwork(catalog, artwork):
 
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
-"""
-def addNationality(catalog,artists):
-    
-    Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artists.csv y
-    con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
-    
 
-    nationality = {'Nationality':artists['Nationality'],
-                    'Artworks':lt.newList('ARRAY_LIST')}
-                    
-    lt.addLast(catalog['Nationality'], nationality) 
-
-    nationalities = nationality['Nationality'].split(',')
-    for place in nationalities:
-        addArtworkNationality(catalog, place, nationality)
-
-    print(nationality)
-
-
-def addArtworkNationality(catalog, nationalities, nationality):
-   
-    nations = catalog['Artist']
-    postnationality = lt.isPresent(nations, nationalities)
-
-    if postnationality > 0:
-        nationality = lt.getElement(nations, postnationality)
-        lt.addLast(nationality['Artworks'], nationality)
-"""
 def addArtworkArtist(catalog, artist_id, artwork):
     """
     
@@ -277,7 +250,7 @@ def getArtistTecnique(catalog,name):
 
 
 def getArtistNationality(catalog):
-      
+
     nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
     #print(lt.size(catalog["Artist"])) 
     
