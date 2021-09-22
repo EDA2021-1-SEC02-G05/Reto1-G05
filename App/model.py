@@ -37,12 +37,6 @@ import time
 import math
 
 
-"""
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
-"""
-
-
 # Construccion de modelos
 def newCatalog(list_type = 'ARRAY_LIST'):
     """
@@ -66,8 +60,9 @@ def newCatalog(list_type = 'ARRAY_LIST'):
 
     catalog['ArtworkDate'] = lt.newList(list_type,
                                  cmpfunction="")
-
     
+    catalog['ArtworkArtist'] = lt.newList(list_type,
+                                 cmpfunction="")
 
     return catalog
 
@@ -129,6 +124,19 @@ def addArtwork(catalog, artwork):
 
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
+        addartistartwork(catalog, artist, artwork)
+
+def addartistartwork(catalog, artist_id, artwork):
+    artists = catalog['Artist']
+    posartist = lt.isPresent(artists, artist_id)
+
+    if posartist > 0:
+        artist = lt.getElement(artists, posartist)
+        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
+                                'ConstituentID':artist_id,
+                                'Title':artwork['Title'],
+                                'DisplayName': artist['DisplayName']}
+        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
@@ -143,6 +151,8 @@ def addArtworkArtist(catalog, artist_id, artwork):
     
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
+
+    
     
     if int(date) != 0 :
         adate = newArtistDate(artist,date, deathdate, nationality, gender )
@@ -150,7 +160,12 @@ def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
         lt.addLast(catalog['ArtistDate'],adate)
 
 def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline):
-    
+
+    #posartist = lt.isPresent(catalog['ArtworkArtist'], artist)
+
+
+    #artist_list = lt.getElement(catalog['ArtworkArtist'],posartist)
+
     if date != '' :
         
         adate = newArtworkDate(artwork,date, artist, medio, dimensions, creditline)
@@ -257,22 +272,18 @@ def getArtistTecnique(catalog,name):
 def getArtistNationality(catalog):
 
     nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
-    #print(lt.size(catalog["Artist"])) 
     
     for artist in lt.iterator(catalog['Artist']):
-        total_obras = lt.size(artist['Artworks'])
         
         nationality = artist['Nationality']   
         if nationality == "":
             nationality = "desconocido"
-        
-        if nationality == "Taiwanese":
-            pass
+    
         nation = lt.isPresent(nationality_artworks, nationality)
         artist_artworks = artist['Artworks']
         if nation > 0:
             nation_works = lt.getElement(nationality_artworks,nation)
-            #lt.addLast(nationality_list, nationality)
+            lt.addLast(nationality_list, nationality)
         else:
             nation_works = {'Nationality': nationality,
                              'Artworks': lt.newList('ARRAY_LIST') } 
@@ -281,6 +292,7 @@ def getArtistNationality(catalog):
         for work in lt.iterator(artist_artworks):
             lt.addLast(nation_works["Artworks"], work)
 
+    sortNationalitysize(nationality_artworks)
     return nationality_artworks
             
 
@@ -491,16 +503,16 @@ def cmpTecniquesize(tec1,tec2):
 
     return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
 ####
-def cmpNationalitysize(tec1,tec2):
+def cmpNationalitysize(nat1,nat2):
 
-    return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
+    return (lt.size(nat1['Artworks'])) > (lt.size(nat2['Artworks']))
+
 def cmpTranspCost(cost1,cost2):
 
     return int(cost1['Cost']) > int(cost2['Cost'])
 
 def cmpTranspOld (artwork1,artwork2):
-    #date1 = artwork1['Artwork']['Date']
-    #date2 = artwork2['Artwork']['Date']
+
     if artwork1['Artwork']['Date'] != '' and artwork2['Artwork']['Date'] != '':
         return int(artwork1['Artwork']['Date']) <  int(artwork2['Artwork']['Date'])
 
@@ -519,9 +531,9 @@ def sortTecnique_size(tecnique_list):
     
     ms.sort(tecnique_list, cmpTecniquesize)
 ####
-def sortNationality_size(nationalities):
+def sortNationalitysize(nationalities):
     
-    ms.sort(nationalities, cmpTecniquesize)
+    ms.sort(nationalities, cmpNationalitysize)
 def sortTransportation(transp_cost):
 
     ms.sort(transp_cost, cmpTranspCost)
