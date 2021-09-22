@@ -275,6 +275,7 @@ def getArtistTecnique(catalog,name):
 
 
 def getArtistNationality(catalog):
+    start_time = time.process_time()
 
     nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
     
@@ -298,7 +299,9 @@ def getArtistNationality(catalog):
             lt.addLast(nation_works["Artworks"], work)
 
     sortNationalitysize(nationality_artworks)
-    return nationality_artworks
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return nationality_artworks,elapsed_time_mseg
             
 
 
