@@ -54,9 +54,11 @@ def newCatalog(list_type = 'ARRAY_LIST'):
                'Artist': None,
                'ArtistDate':None,
                'ArtworkDate':None,
+               'ArtworkArtist':lt.newList(list_type,
+                                 cmpfunction=""),
                 }
 
-    catalog['Artwork'] = lt.newList(list_type)
+    catalog['Artwork'] = lt.newList(list_type, cmpfunction=cmpartistID)
     catalog['Artist'] = lt.newList(list_type,
                                     cmpfunction=cmpartistID)
     catalog['ArtistDate'] = lt.newList(list_type,
@@ -64,6 +66,7 @@ def newCatalog(list_type = 'ARRAY_LIST'):
 
     catalog['ArtworkDate'] = lt.newList(list_type,
                                  cmpfunction="")
+
     
 
     return catalog
@@ -84,7 +87,10 @@ def addArtist(catalog,artists):
                     'Artworks':lt.newList('ARRAY_LIST')}
                     
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
+
     lt.addLast(catalog['Artist'], artist) 
+
+
 
 def addArtwork(catalog, artwork):
 
@@ -96,20 +102,21 @@ def addArtwork(catalog, artwork):
 
     artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':artwork['Title'], 
-                    'ConstituentID':artwork['ConstituentID'][1:-1], 
+                    'ConstituentID':artwork['ConstituentID'][1:-1],
                     'Date': artwork[ 'Date'],
                     'Medium':artwork['Medium'], 
+                    'Classification': artwork['Classification'],
                     'Dimensions':artwork['Dimensions'],
                     'CreditLine': artwork['CreditLine'], 
                     'Department':artwork['Department'], 
                     'DateAcquired':artwork['DateAcquired'],
-                    'Weight': artwork['Weight'],
-                    'Circumference': artwork['Circumference'],
-                    'Depth': artwork['Depth'],
-                    'Diameter':artwork['Diameter'],
-                    'Height': artwork['Height'],
-                    'Length': artwork['Length'],
-                    'Width':artwork['Width']}
+                    'Weight': artwork['Weight (kg)'],
+                    'Circumference': artwork['Circumference (cm)'],
+                    'Depth': artwork['Depth (cm)'],
+                    'Diameter':artwork['Diameter (cm)'],
+                    'Height': artwork['Height (cm)'],
+                    'Length': artwork['Length (cm)'],
+                    'Width':artwork['Width (cm)']}
 
     lt.addLast(catalog['Artwork'], artwork)
     
@@ -122,7 +129,25 @@ def addArtwork(catalog, artwork):
 
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
+        #addArtistArtwork(catalog,artist, artwork)
+
 """
+    
+def addArtistArtwork(catalog, artist_id, artwork):
+    
+    artistsartwork = catalog['ArtworkArtist']
+    artists = catalog['Artist']
+    posartist = lt.isPresent(artists, artist_id)
+    if posartist > 0:
+        artist = lt.getElement(artists, posartist)
+        artwarti = {'ObjectID':artwork['ObjectID'],
+                    'Title': artwork['Title'],
+                    'ConstituentID':artist['ConstituentID'],
+                    'DisplayName':artist['DisplayName']}
+        lt.addLast(artistsartwork, artwarti)
+
+            
+
 def addNationality(catalog,artists):
     
     Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artists.csv y
@@ -140,6 +165,8 @@ def addNationality(catalog,artists):
 
     print(nationality)
 """
+    
+
 def addArtworkNationality(catalog, nationalities, nationality):
    
     nations = catalog['Artist']
@@ -242,7 +269,6 @@ def getArtistTecnique(catalog,name):
 
     '''
     Crea una lista nueva donde se van a ir clasificando las obras de arte de un artista según la técnica empleada.
-
     '''
     
     tecniques_list = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistTecnique)
@@ -292,47 +318,165 @@ def getArtistNationality(catalog,artists):
                     lt.addLast(nationalities,nation)
                     #tecnique es la tecnica encontrada en la lista de tecnicas
 
-def getTransportationCost(catalog, dpto):
 
+def getTransportationCost(catalog, dpto):
+    costo_total = 0
     transp_cost = lt.newList('ARRAY_LIST')
     artworksBydpto = lt.newList('ARRAY_LIST')
 
     for artwork in lt.iterator(catalog['Artwork']):
 
-        if artwork['Department'].lower == dpto.lower():
+        if artwork['Department'].lower() == dpto.lower():
 
             lt.addLast(artworksBydpto, artwork)
 
     for artwork in lt.iterator(artworksBydpto):
+        weight = artwork['Weight']
 
-        cost_weight=0
-        cost_area=0
-        cost_volume=0
+        if artwork['Weight'] == '':
+            weight = 0
+        else: 
+            weight = float(artwork['Weight'])
 
-        if artwork['Weight'] != '':
-            cost_weight = int(artwork['Weight'])*72.000
-        
-        if artwork['Lenght'] != '' and artwork['Height'] != '':
-            cost_area = (int(artwork['Lenght'])*int(artwork['Height']))*72.000
-        
-        elif artwork['Diameter'] != '':
-            cost_area = (math.pi*(int(artwork['Diameter'])/2)**2)*72.000
-        
-        if artwork['Lenght'] != '' and artwork['Height'] != '' and artwork['Width'] != '':
-            cost_volume = (int(artwork['Lenght'])*int(artwork['Height'])*int(artwork['Width']))*72.00
-        
-        elif artwork['Diameter'] != '' and artwork['Height'] != '':
+        cost_weight=round(((weight)*72),2)
+        cost_a = round(((cost_Area(artwork))/10000),2) 
+        cost_vol = round(((cost_volume(artwork))/1000000),2)
 
-            cost_volume = ((math.pi*(int(artwork['Diameter'])/2)**2)*artwork['Height'])*72.00
+        if cost_weight == 0 and cost_a == 0 and cost_vol == 0:
+            costo_total =+ 48.00
+            cost = {'Artwork':artwork, 
+                    'Cost':48.00}
+
+            lt.addLast(transp_cost,cost)
+
+        elif cost_weight > cost_vol and cost_weight > cost_a:
+            
+                costo_total =+ cost_weight
+                cost = {'Artwork':artwork, 
+                        'Cost':cost_weight}
+
+                lt.addLast(transp_cost,cost)
+
+        elif cost_a > cost_weight and cost_a > cost_vol:
+            
+                costo_total =+ cost_a
+                cost = {'Artwork':artwork, 
+                        'Cost':cost_a}
+
+                lt.addLast(transp_cost,cost)
+
+        elif cost_vol > cost_a and cost_vol > cost_weight:
+
+                costo_total =+ cost_vol
+                cost = {'Artwork':artwork, 
+                        'Cost':cost_vol}
+
+                lt.addLast(transp_cost,cost)
         
-        
+    copy=lt.subList(transp_cost,1,lt.size(transp_cost))
+    sortTranspOld(copy)
+    sortTransportation(transp_cost)
+    return transp_cost, costo_total, copy
+    
+def cost_Area(artwork):
+    pi = math.pi
+    length = artwork['Length']
+    height = artwork['Height']
+    width = artwork['Width']
+    diameter =artwork['Diameter']
+
+    #area de la forma largo por altura
+    if artwork['Length'] == '':
+        length = 0
+    else: 
+        length = float(length)
+    if artwork['Height'] == '':
+        height = 0
+    else: 
+        height = float(height)   
+    
+    if artwork['Diameter'] == '':
+        diameter = 0
+    else: 
+        diameter = float(diameter)
+
+    if artwork['Width'] == '':
+        width = 0
+    else: 
+        width = float(width)
 
 
+    cost_area1 = (length*height)*72
+    cost_area5 = (width*height)*72
+    #area de circulo    
+    cost_area2 = (pi*((diameter)/2)**2)*72
+    #area cilindro
+    cost_area3 = (2*(pi*(diameter)/2)*height) + 2*((math.pi*((diameter)/2)**2))*72
+    #area esfera
+    cost_area4 = (4*(pi*(diameter)/2)**2)*72
 
-        
+    if cost_area1 > cost_area2 and cost_area1 >cost_area3 and cost_area1 > cost_area4 and cost_area1 > cost_area5:
+        return cost_area1
+    elif cost_area2 > cost_area1 and cost_area2 > cost_area3 and cost_area2 > cost_area4 and cost_area2 > cost_area5: 
+        return cost_area2
+    elif cost_area3 > cost_area1 and cost_area3 > cost_area2 and cost_area3 > cost_area4 and cost_area3 > cost_area5 :
+        return cost_area3
+    elif cost_area4 > cost_area1 and cost_area4 > cost_area2 and cost_area4 > cost_area3 and cost_area4 > cost_area5 :
+        return cost_area4
+    else: 
+        return cost_area5
 
-    pass
-                    
+
+def cost_volume(artwork):
+
+    pi = math.pi
+
+    length = artwork['Length']
+    height = artwork['Height']
+    diameter = artwork['Diameter']
+    width = artwork['Width']
+    depth = artwork['Depth']
+
+    if artwork['Width'] == '':
+        width = 0
+    else: 
+        width = float(width)
+    if artwork['Length'] == '':
+        length = 0
+    else: 
+        length = float(length)
+    if artwork['Height'] == '':
+        height = 0
+    else: 
+        height = float(height)
+    if artwork['Diameter'] == '':
+        diameter = 0
+    else: 
+        diameter = float(diameter)
+    if artwork['Depth'] == '':
+        depth = 0
+    else: 
+        depth = float(depth)
+
+    #volumen de la forma longitud por altura por ancho
+
+    cost_vol1 = (length*height*width)*72
+    cost_vol2 = (length*height*depth)*72
+
+    #volumen esfera
+    cost_vol3 = ((4/3)*((pi*(diameter)/2)**3))*72
+    #volumen cilindro
+    cost_vol4 = ((pi*((diameter)/2)**2)*height)*72
+
+    if cost_vol1 > cost_vol2 and cost_vol1 > cost_vol3 and cost_vol1 > cost_vol4:
+        return cost_vol1
+    elif cost_vol2 > cost_vol1 and cost_vol2 > cost_vol3 and cost_vol2 > cost_vol4:
+        return cost_vol2
+    elif cost_vol3 > cost_vol1 and cost_vol3 > cost_vol2 and cost_vol3 > cost_vol4:
+        return cost_vol3
+    
+    else: 
+        return cost_vol4
 
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -374,6 +518,16 @@ def cmpTecniquesize(tec1,tec2):
 
     return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
 
+def cmpTranspCost(cost1,cost2):
+
+    return int(cost1['Cost']) > int(cost2['Cost'])
+
+def cmpTranspOld (artwork1,artwork2):
+    #date1 = artwork1['Artwork']['Date']
+    #date2 = artwork2['Artwork']['Date']
+    if artwork1['Artwork']['Date'] != '' and artwork2['Artwork']['Date'] != '':
+        return int(artwork1['Artwork']['Date']) <  int(artwork2['Artwork']['Date'])
+
 # Funciones de ordenamiento
 
 def sortYear_Artist(artist_inrange):
@@ -388,4 +542,11 @@ def sortYear_Artwork(artwork_inrange):
 def sortTecnique_size(tecnique_list):
     
     ms.sort(tecnique_list, cmpTecniquesize)
+
+def sortTransportation(transp_cost):
+
+    ms.sort(transp_cost, cmpTranspCost)
+
+def sortTranspOld(copy):
+    ms.sort(copy, cmpTranspOld)
       
