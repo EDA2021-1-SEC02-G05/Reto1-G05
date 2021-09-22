@@ -124,14 +124,14 @@ def getArtistTecnique(catalog,name):
     tecnique = model.getArtistTecnique(catalog, name)
     return tecnique
 
-def getArtistNationality(catalog,artists):
+def getArtistNationality(catalog):
 
     """
     REQ 4
     Llama a la función en el model para poder obtener una lista clasificando las obras por las nacionalidades de sus artistas 
     """
 
-    nationality = model.getArtistNationality(catalog,artists)
+    nationality = model.getArtistNationality(catalog)
     return nationality
 
 def getTransportationCost(catalog,dpto):

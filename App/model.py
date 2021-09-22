@@ -129,52 +129,6 @@ def addArtwork(catalog, artwork):
 
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
-        #addArtistArtwork(catalog,artist, artwork)
-
-"""
-    
-def addArtistArtwork(catalog, artist_id, artwork):
-    
-    artistsartwork = catalog['ArtworkArtist']
-    artists = catalog['Artist']
-    posartist = lt.isPresent(artists, artist_id)
-    if posartist > 0:
-        artist = lt.getElement(artists, posartist)
-        artwarti = {'ObjectID':artwork['ObjectID'],
-                    'Title': artwork['Title'],
-                    'ConstituentID':artist['ConstituentID'],
-                    'DisplayName':artist['DisplayName']}
-        lt.addLast(artistsartwork, artwarti)
-
-            
-
-def addNationality(catalog,artists):
-    
-    Se utiliza un diccionario para extraer únicamente los datos necesarios del archivo de excel Artists.csv y
-    con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
-    
-
-    nationality = {'Nationality':artists['Nationality'],
-                    'Artworks':lt.newList('ARRAY_LIST')}
-                    
-    lt.addLast(catalog['Nationality'], nationality) 
-
-    nationalities = nationality['Nationality'].split(',')
-    for place in nationalities:
-        addArtworkNationality(catalog, place, nationality)
-
-    print(nationality)
-"""
-    
-
-def addArtworkNationality(catalog, nationalities, nationality):
-   
-    nations = catalog['Artist']
-    postnationality = lt.isPresent(nations, nationalities)
-
-    if postnationality > 0:
-        nationality = lt.getElement(nations, postnationality)
-        lt.addLast(nationality['Artworks'], nationality)
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
@@ -300,23 +254,35 @@ def getArtistTecnique(catalog,name):
             return tecniques_list, total_obras
 
 
-def getArtistNationality(catalog,artists):
-    nationalities = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)         
+def getArtistNationality(catalog):
+
+    nationality_artworks = lt.newList('ARRAY_LIST', cmpfunction=cmpArtistNationality)        
+    #print(lt.size(catalog["Artist"])) 
+    
     for artist in lt.iterator(catalog['Artist']):
+        total_obras = lt.size(artist['Artworks'])
         
-        for n in lt.iterator(artist['Nationality']):
-                nationality = n['Nationality']
-                posnationality = lt.isPresent(nationalities, nationality)
+        nationality = artist['Nationality']   
+        if nationality == "":
+            nationality = "desconocido"
+        
+        if nationality == "Taiwanese":
+            pass
+        nation = lt.isPresent(nationality_artworks, nationality)
+        artist_artworks = artist['Artworks']
+        if nation > 0:
+            nation_works = lt.getElement(nationality_artworks,nation)
+            #lt.addLast(nationality_list, nationality)
+        else:
+            nation_works = {'Nationality': nationality,
+                             'Artworks': lt.newList('ARRAY_LIST') } 
+            lt.addLast(nationality_artworks, nation_works)
+            
+        for work in lt.iterator(artist_artworks):
+            lt.addLast(nation_works["Artworks"], work)
 
-                if posnationality > 0:
-                    nation = lt.getElement(nationality,posnationality)
-                    lt.addLast(nationalities[nation], artists)
-                else:
-                    nation = {nationality: lt.newList('ARRAY_LIST')}
-
-                    lt.addLast(nation, artists)
-                    lt.addLast(nationalities,nation)
-                    #tecnique es la tecnica encontrada en la lista de tecnicas
+    return nationality_artworks
+            
 
 
 def getTransportationCost(catalog, dpto):
@@ -515,16 +481,19 @@ def cmpArtistTecnique(tec1, tec2):
     else:
         return -1
 
-def cmpArtistNationality(artist):
+def cmpArtistNationality(artist1, artist2):
 
-    if artist["Nationality"] in artist ["Nationality"]:
+    if artist1.lower() == artist2["Nationality"].lower():
         return 0 
     else:
         return -1
 def cmpTecniquesize(tec1,tec2):
 
     return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
+####
+def cmpNationalitysize(tec1,tec2):
 
+    return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
 def cmpTranspCost(cost1,cost2):
 
     return int(cost1['Cost']) > int(cost2['Cost'])
@@ -549,7 +518,10 @@ def sortYear_Artwork(artwork_inrange):
 def sortTecnique_size(tecnique_list):
     
     ms.sort(tecnique_list, cmpTecniquesize)
-
+####
+def sortNationality_size(nationalities):
+    
+    ms.sort(nationalities, cmpTecniquesize)
 def sortTransportation(transp_cost):
 
     ms.sort(transp_cost, cmpTranspCost)
