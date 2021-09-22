@@ -155,12 +155,12 @@ def printArtworkBynationalities(nationalities, tiempo):
         tresprimeras = lt.subList(nacionalidad['Artworks'], 1, 3)
         tresultimas = lt.subList(nacionalidad['Artworks'],tamano-2, 3)
         for artwork in lt.iterator(tresprimeras):
-            print(artwork)
-            #print("Titulo: " + artwork["Title"] + ", Artista/s : " + artwork["ConstituentID"]+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
+            #print(artwork)
+            print("Titulo: " + artwork["Title"] + ", Artista/s : " + str(artwork["Artists"]["elements"])+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
         
         for artwork in lt.iterator(tresultimas):
-            print(artwork)
-            print("Titulo: " + artwork["Title"] + ", Artista/s : " + artwork["ConstituentID"]+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
+            #print(artwork)
+            print("Titulo: " + artwork["Title"] + ", Artista/s : " + str(artwork["Artists"]["elements"])+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
     
     print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
 
