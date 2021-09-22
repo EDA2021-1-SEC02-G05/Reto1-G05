@@ -20,7 +20,6 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
-
 import config as cf
 import sys
 import controller
@@ -89,10 +88,10 @@ def printArtworkDate(artworks,tiempo, año_inicial, año_final):
     
     tamano = lt.size(artworks)
 
-    first_3_artworks = lt.subList(artworks, 1, 3 )
-    last_3_artworks = lt.subList(artworks, tamano - 2, 3)
 
     if tamano > 0:
+        first_3_artworks = lt.subList(artworks, 1, 3 )
+        last_3_artworks = lt.subList(artworks, tamano - 2, 3)
 
         print ('Se encontraron ' + str(tamano) + ' obras de arte adquiridas en el rango de ' + str(año_inicial) + ' hasta ' + str(año_final)+ "\n")
         cont = 0
@@ -140,28 +139,37 @@ def printArtworkBynationalities(nationalities, tiempo):
     print('Las 10 nacionalidades con mayor número de obras son: ')
 
     top10 = lt.subList(nationalities,1, 10)
+    top = lt.subList(nationalities,1, 1)
+
 
     for nacionalidad in lt.iterator(top10):
         tamano = lt.size(nacionalidad['Artworks'])
         print(nacionalidad['Nationality']+': '+ str(tamano))
     
-    top = lt.subList(nationalities,1, 1)
     for nacionalidad in lt.iterator(top):
         tamano = lt.size(nacionalidad['Artworks'])
         print("La nacionalidad con más obras es: "+nacionalidad["Nationality"]+" con un total de "+str(tamano)+" obras.")
-        print("La información de las obras de dicha nacionalidad se presenta a continuación:")
-        for artwork in lt.iterator(nacionalidad['Artworks']):    
+        print("La información de las primeras y ultimas 3 obras de dicha nacionalidad se presenta a continuación:")
+        tresprimeras = lt.subList(nacionalidad['Artworks'], 1, 3)
+        tresultimas = lt.subList(nacionalidad['Artworks'],tamano-2, 3)
+        for artwork in lt.iterator(tresprimeras):
+
+            print("Titulo: " + artwork["Title"] + ", Artista/s : " + artwork["ConstituentID"]+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
+        
+        for artwork in lt.iterator(tresultimas):
+
             print("Titulo: " + artwork["Title"] + ", Artista/s : " + artwork["ConstituentID"]+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
     
     print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
 
-
-def printTransportationCost(transportation,tiempo,  dpto, total, old):
+def printTransportationCost(transportation,tiempo, costo_total, old, dpto, peso_total):
     tamano = lt.size(transportation)
     if tamano > 0 :
 
-        print('El total de obras a transporte del departamento seleccionado es: '+str(tamano)+'\n')
-        print('\n El estimado total en USD para el costo del servicio es: '+ str(total)+'\n')
+        print('El total de obras a transporte del departamento de '+ dpto +' es: '+str(tamano)+'\n')
+        print('\n El estimado total en USD para el costo del servicio es: '+ str(costo_total)+'\n')
+        print('\n El estimado total del peso de las obras es: '+ str(peso_total)+'\n')
+
         top5_viejas = lt.subList(old, 1, 5 )
         print('\n Las 5 obras más antiguas a transportar son: \n')
         for artwork in lt.iterator(top5_viejas):
@@ -172,7 +180,6 @@ def printTransportationCost(transportation,tiempo,  dpto, total, old):
 
         for artwork in lt.iterator(top5_costosas):
             print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: " + artwork['Artwork']["Artist/s"] + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"])+ '\n')
-        
         print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
     else: 
         print('No se encontraron obras para transportar de ese departamento')
@@ -229,6 +236,7 @@ while True:
         año_inicial = (input('Año inicial para el rango de busqueda: '))
         año_final = (input('Año final para el rango de busqueda: '))
         artwork = controller.getArtworkYear(catalog, año_inicial, año_final)
+    
         printArtworkDate(artwork[0],artwork[1], año_inicial, año_final )
 
     elif int(inputs[0]) == 4:
@@ -237,7 +245,9 @@ while True:
         
         name = input('Nombre del artista sobre el cual quiere realizar la consulta: ')
         tecniques = controller.getArtistTecnique(catalog, name)
+
         printArtistTecnique( tecniques[0],tecniques[2],tecniques[1], name)
+
 
     elif int(inputs[0]) == 5:
         
@@ -255,7 +265,8 @@ while True:
         
         dpto = input('Ingrese el departamento del que quiere calcular el costo de transporte de sus obras: ')
         transport = controller.getTransportationCost(catalog, dpto)
-        printTransportationCost(transport[0], transport[2], dpto,transport[1])
+
+        printTransportationCost(transport[0], transport[1] ,transport[2], transport[3],dpto, transport[4])
         
 
     elif int(inputs[0]) == 7:

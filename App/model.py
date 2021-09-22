@@ -73,12 +73,12 @@ def addArtist(catalog,artists):
     con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
     """
 
-    artist = {'ConstituentID':artists['ConstituentID'],
-                    'DisplayName': artists['DisplayName'],
-                    'Nationality':artists['Nationality'],
-                    'Gender':artists['Gender'],
-                    'BeginDate':artists['BeginDate'],
-                    'EndDate':artists['EndDate'],
+    artist = {'ConstituentID':int(artists['ConstituentID']),
+                    'DisplayName': (artists['DisplayName']).lower(),
+                    'Nationality':(artists['Nationality']).lower(),
+                    'Gender':(artists['Gender']).lower(),
+                    'BeginDate':int(artists['BeginDate']),
+                    'EndDate':int(artists['EndDate']),
                     'Artworks':lt.newList('ARRAY_LIST')}
                     
     addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
@@ -95,23 +95,23 @@ def addArtwork(catalog, artwork):
     """
 
 
-    artwork = {'ObjectID':artwork['ObjectID'], 
-                    'Title':artwork['Title'], 
-                    'ConstituentID':artwork['ConstituentID'][1:-1],
-                    'Date': artwork[ 'Date'],
-                    'Medium':artwork['Medium'], 
-                    'Classification': artwork['Classification'],
+    artwork = {'ObjectID':int(artwork['ObjectID']), 
+                    'Title':(artwork['Title']).lower(), 
+                    'ConstituentID':int(artwork['ConstituentID'][1:-1]),
+                    'Date': int(artwork[ 'Date']),
+                    'Medium':(artwork['Medium']).lower(), 
+                    'Classification': (artwork['Classification']).lower(),
                     'Dimensions':artwork['Dimensions'],
-                    'CreditLine': artwork['CreditLine'], 
-                    'Department':artwork['Department'], 
+                    'CreditLine': (artwork['CreditLine']).lower(), 
+                    'Department':(artwork['Department']).lower(), 
                     'DateAcquired':artwork['DateAcquired'],
-                    'Weight': artwork['Weight (kg)'],
-                    'Circumference': artwork['Circumference (cm)'],
-                    'Depth': artwork['Depth (cm)'],
-                    'Diameter':artwork['Diameter (cm)'],
-                    'Height': artwork['Height (cm)'],
-                    'Length': artwork['Length (cm)'],
-                    'Width':artwork['Width (cm)']}
+                    'Weight': float(artwork['Weight (kg)']),
+                    'Circumference': float(artwork['Circumference (cm)']),
+                    'Depth': float(artwork['Depth (cm)']),
+                    'Diameter':float(artwork['Diameter (cm)']),
+                    'Height': float(artwork['Height (cm)']),
+                    'Length': float(artwork['Length (cm)']),
+                    'Width':float(artwork['Width (cm)'])}
 
     lt.addLast(catalog['Artwork'], artwork)
     
@@ -124,19 +124,20 @@ def addArtwork(catalog, artwork):
 
     for artist in artist_id:
         addArtworkArtist(catalog, artist, artwork)
-        addartistartwork(catalog, artist, artwork)
+        #
+        # 3addartistartwork(catalog, artist, artwork)
 
-def addartistartwork(catalog, artist_id, artwork):
-    artists = catalog['Artist']
-    posartist = lt.isPresent(artists, artist_id)
+#def addartistartwork(catalog, artist_id, artwork):
+#    artists = catalog['Artist']
+#    posartist = lt.isPresent(artists, artist_id)
 
-    if posartist > 0:
-        artist = lt.getElement(artists, posartist)
-        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
-                                'ConstituentID':artist_id,
-                                'Title':artwork['Title'],
-                                'DisplayName': artist['DisplayName']}
-        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
+#    if posartist > 0:
+#        artist = lt.getElement(artists, posartist)
+#        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
+#                                'ConstituentID':artist_id,
+#                                'Title':artwork['Title'],
+#                                'DisplayName': artist['DisplayName']}
+#        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
@@ -147,7 +148,8 @@ def addArtworkArtist(catalog, artist_id, artwork):
 
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
-        lt.addLast(artist['Artworks'], artwork)
+    
+    lt.addLast(artist['Artworks'], artwork)
     
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
@@ -161,10 +163,6 @@ def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
 
 def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline):
 
-    #posartist = lt.isPresent(catalog['ArtworkArtist'], artist)
-
-
-    #artist_list = lt.getElement(catalog['ArtworkArtist'],posartist)
 
     if date != '' :
         
@@ -173,7 +171,6 @@ def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline
         lt.addLast(catalog['ArtworkDate'],adate)
 
 # Funciones para creacion de datos
-
 
 def newArtistDate(artist, date, deathdate, nationality, gender):
     artist_date = {'name': '', 'BeginDate':'', 'EndDate':'', 'nationality':'','gender':''}
@@ -290,16 +287,17 @@ def getArtistNationality(catalog):
     
         nation = lt.isPresent(nationality_artworks, nationality)
         artist_artworks = artist['Artworks']
-        if nation > 0:
-            nation_works = lt.getElement(nationality_artworks,nation)
-            #lt.addLast(nationality_list, nationality)
-        else:
-            nation_works = {'Nationality': nationality,
-                             'Artworks': lt.newList('ARRAY_LIST') } 
-            lt.addLast(nationality_artworks, nation_works)
-            
-        for work in lt.iterator(artist_artworks):
-            lt.addLast(nation_works["Artworks"], work)
+        if artist_artworks != 0:
+            if nation > 0:
+                nation_works = lt.getElement(nationality_artworks,nation)
+                #lt.addLast(nationality_list, nationality)
+            else:
+                nation_works = {'Nationality': nationality,
+                                'Artworks': lt.newList('ARRAY_LIST') } 
+                lt.addLast(nationality_artworks, nation_works)
+                
+            for work in lt.iterator(artist_artworks):
+                lt.addLast(nation_works["Artworks"], work)
 
     sortNationalitysize(nationality_artworks)
     stop_time = time.process_time()
@@ -307,10 +305,10 @@ def getArtistNationality(catalog):
     return nationality_artworks,elapsed_time_mseg
             
 
-
 def getTransportationCost(catalog, dpto):
     start_time = time.process_time()
     costo_total = 0
+    peso_total = 0
     transp_cost = lt.newList('ARRAY_LIST')
     artworksBydpto = lt.newList('ARRAY_LIST')
 
@@ -339,7 +337,7 @@ def getTransportationCost(catalog, dpto):
         cost_vol = round(((cost_volume(artwork))/1000000),2)
 
         if cost_weight == 0 and cost_a == 0 and cost_vol == 0:
-            costo_total =+ 48.00
+            costo_total  += 48.00
             cost = {'Artwork':artwork_filtrada, 
                     'Cost':48.00}
 
@@ -347,7 +345,8 @@ def getTransportationCost(catalog, dpto):
 
         elif cost_weight > cost_vol and cost_weight > cost_a:
             
-                costo_total =+ cost_weight
+                costo_total  += cost_weight
+                peso_total += weight
                 cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_weight}
 
@@ -355,7 +354,8 @@ def getTransportationCost(catalog, dpto):
 
         elif cost_a > cost_weight and cost_a > cost_vol:
             
-                costo_total =+ cost_a
+                costo_total += cost_a
+                peso_total += weight
                 cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_a}
 
@@ -363,18 +363,19 @@ def getTransportationCost(catalog, dpto):
 
         elif cost_vol > cost_a and cost_vol > cost_weight:
 
-                costo_total =+ cost_vol
+                costo_total  += cost_vol
+                peso_total += weight
                 cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_vol}
 
                 lt.addLast(transp_cost,cost)
         
-    copy=lt.subList(transp_cost,1,lt.size(transp_cost))
+    copy= transp_cost.copy()
     sortTranspOld(copy)
     sortTransportation(transp_cost)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
-    return transp_cost, costo_total, copy, elapsed_time_mseg
+    return transp_cost, elapsed_time_mseg,round(costo_total,2), copy, round(peso_total, 2)
     
 def cost_Area(artwork):
     pi = math.pi
@@ -515,7 +516,7 @@ def cmpArtistNationality(artist1, artist2):
 def cmpTecniquesize(tec1,tec2):
 
     return (lt.size(tec1['Artworks'])) > (lt.size(tec2['Artworks']))
-####
+
 def cmpNationalitysize(nat1,nat2):
 
     return (lt.size(nat1['Artworks'])) > (lt.size(nat2['Artworks']))
@@ -543,7 +544,6 @@ def sortYear_Artwork(artwork_inrange):
 def sortTecnique_size(tecnique_list):
     
     ms.sort(tecnique_list, cmpTecniquesize)
-####
 def sortNationalitysize(nationalities):
     
     ms.sort(nationalities, cmpNationalitysize)
