@@ -135,15 +135,16 @@ def printTransportationCost(transportation, dpto, total, old):
     print('El total de obras a transporte del departamento seleccionado es: '+str(tamano)+'\n')
     print('\n El estimado total en USD para el costo del servicio es: '+ str(total)+'\n')
     top5_viejas = lt.subList(old, 1, 5 )
-    print('Las 5 obras más antiguas a transportar son: \n')
-    for obra_vieja in lt.iterator(top5_viejas):
-        print(obra_vieja)
+    print('\n Las 5 obras más antiguas a transportar son: \n')
+    for artwork in lt.iterator(top5_viejas):
+        print("Title: " + artwork['Artwork']["Title"] + ", Artists: " + artwork['Artwork']["Artist/s"] + ", Classification : " + artwork['Artwork']["Classification"] + ", Date: "+ artwork['Artwork']["Date"] + ", Medium: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", TranspCost: " + str(artwork["Cost"]) + '\n')
     
     top5_costosas = lt.subList(transportation, 1 , 5)
-    print('Las 5 obras más costosas de transportar son: \n')
+    print('\n Las 5 obras más costosas de transportar son: \n')
 
-    for obra_costosa in lt.iterator(top5_costosas):
-        print(obra_costosa)
+    for artwork in lt.iterator(top5_costosas):
+        print("Title: " + artwork['Artwork']["Title"] + ", Artists: " + artwork['Artwork']["Artist/s"] + ", Classification : " + artwork['Artwork']["Classification"] + ", Date: "+ artwork['Artwork']["Date"] + ", Medium: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", TranspCost: " + str(artwork["Cost"])+ '\n')
+    
 
 """
 Menu principal

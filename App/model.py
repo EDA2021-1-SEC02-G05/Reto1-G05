@@ -324,6 +324,7 @@ def getTransportationCost(catalog, dpto):
     transp_cost = lt.newList('ARRAY_LIST')
     artworksBydpto = lt.newList('ARRAY_LIST')
 
+
     for artwork in lt.iterator(catalog['Artwork']):
 
         if artwork['Department'].lower() == dpto.lower():
@@ -331,6 +332,12 @@ def getTransportationCost(catalog, dpto):
             lt.addLast(artworksBydpto, artwork)
 
     for artwork in lt.iterator(artworksBydpto):
+        artwork_filtrada = {'Title': artwork['Title'],
+                            'Artist/s':artwork['ConstituentID'],
+                            'Classification': artwork['Classification'],
+                            'Date':artwork['Date'],
+                            'Medium':artwork['Medium'],
+                            'Dimensions':artwork['Dimensions']}
         weight = artwork['Weight']
 
         if artwork['Weight'] == '':
@@ -344,7 +351,7 @@ def getTransportationCost(catalog, dpto):
 
         if cost_weight == 0 and cost_a == 0 and cost_vol == 0:
             costo_total =+ 48.00
-            cost = {'Artwork':artwork, 
+            cost = {'Artwork':artwork_filtrada, 
                     'Cost':48.00}
 
             lt.addLast(transp_cost,cost)
@@ -352,7 +359,7 @@ def getTransportationCost(catalog, dpto):
         elif cost_weight > cost_vol and cost_weight > cost_a:
             
                 costo_total =+ cost_weight
-                cost = {'Artwork':artwork, 
+                cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_weight}
 
                 lt.addLast(transp_cost,cost)
@@ -360,7 +367,7 @@ def getTransportationCost(catalog, dpto):
         elif cost_a > cost_weight and cost_a > cost_vol:
             
                 costo_total =+ cost_a
-                cost = {'Artwork':artwork, 
+                cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_a}
 
                 lt.addLast(transp_cost,cost)
@@ -368,7 +375,7 @@ def getTransportationCost(catalog, dpto):
         elif cost_vol > cost_a and cost_vol > cost_weight:
 
                 costo_total =+ cost_vol
-                cost = {'Artwork':artwork, 
+                cost = {'Artwork':artwork_filtrada, 
                         'Cost':cost_vol}
 
                 lt.addLast(transp_cost,cost)
