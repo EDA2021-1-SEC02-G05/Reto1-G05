@@ -140,19 +140,26 @@ def printArtworkBynationalities(nationalities, tiempo):
     print('Las 10 nacionalidades con mayor número de obras son: ')
 
     top10 = lt.subList(nationalities,1, 10)
-    top1 = lt.subList(top10,1, 1)
-    top1_3primeras = lt.subList(top1,1, 3)
-    top1_3ultimas = lt.subList(top1,lt.size(top1)-2, 3)
+    top = lt.subList(nationalities,1, 1)
+
 
     for nacionalidad in lt.iterator(top10):
         tamano = lt.size(nacionalidad['Artworks'])
         print(nacionalidad['Nationality']+': '+ str(tamano))
+    
+    for nacionalidad in lt.iterator(top):
+        tamano = lt.size(nacionalidad['Artworks'])
+        print("La nacionalidad con más obras es: "+nacionalidad["Nationality"]+" con un total de "+str(tamano)+" obras.")
+        print("La información de las primeras y ultimas 3 obras de dicha nacionalidad se presenta a continuación:")
+        tresprimeras = lt.subList(nacionalidad['Artworks'], 1, 3)
+        tresultimas = lt.subList(nacionalidad['Artworks'],tamano-2, 3)
+        for artwork in lt.iterator(tresprimeras):
 
-    print('\n Las primeras 3 y últimas 3 obras de la nacionalidad con mayor número de obras son: \n')
-    for artwork in lt.iterator(top1_3primeras):
-        print(artwork)
-    for artwork in lt.iterator(top1_3ultimas):
-        print(artwork)
+            print("Titulo: " + artwork["Title"] + ", Artista/s : " + artwork["ConstituentID"]+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
+        
+        for artwork in lt.iterator(tresultimas):
+
+            print("Titulo: " + artwork["Title"] + ", Artista/s : " + artwork["ConstituentID"]+ ", Fecha: "+ artwork["Date"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] + '\n')
     
     print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
 
