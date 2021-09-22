@@ -197,8 +197,8 @@ while True:
         
         "Requerimiento 4: clasifica las obras por la nacionalidad de sus creadores"
         
-        nationalities = controller.getArtistNationality(catalog,artist)
-        printArtworkBynationalities(nationalities)
+        nationalities = controller.getArtistNationality(catalog)
+        print(nationalities)
         
 
     elif int(inputs[0]) == 6:
