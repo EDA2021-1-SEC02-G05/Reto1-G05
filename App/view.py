@@ -155,6 +155,7 @@ def printArtworkBynationalities(nationalities, tiempo):
     
     print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
 
+
 def printTransportationCost(transportation,tiempo,  dpto, total, old):
     tamano = lt.size(transportation)
     if tamano > 0 :
