@@ -139,27 +139,8 @@ def addNameCostrituentID(catalog,artwork):
     """
     artist_id = artwork['ConstituentID'].split(',')
 
-<<<<<<< HEAD
     for id in artist_id:
         addArtworkArtist(catalog, id, artwork)
-=======
-    for artist in artist_id:
-        addArtworkArtist(catalog, artist, artwork)
-        #
-        # 3addartistartwork(catalog, artist, artwork)
-
-def addartistartwork(catalog, artist_id, artwork):
-    artists = catalog['Artist']
-    posartist = lt.isPresent(artists, artist_id)
-
-    if posartist > 0:
-        artist = lt.getElement(artists, posartist)
-        artist_artwork_dict = {'ObjectID':artwork['ObjectID'],
-                                'ConstituentID':artist_id,
-                                'Title':artwork['Title'],
-                                'DisplayName': artist['DisplayName']}
-        lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
->>>>>>> d23b3c0fe48e699379c54b5c660e41c6b381972b
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
