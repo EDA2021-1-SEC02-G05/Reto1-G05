@@ -98,6 +98,7 @@ def addArtwork(catalog, artwork):
     artwork = {'ObjectID':int(artwork['ObjectID']), 
                     'Title':(artwork['Title']).lower(), 
                     'ConstituentID':artwork['ConstituentID'][1:-1],
+                    'Artists':lt.newList('ARRAY_LIST'),
                     'Date': artwork[ 'Date'],
                     'Medium':(artwork['Medium']).lower(), 
                     'Classification': (artwork['Classification']).lower(),
@@ -115,9 +116,10 @@ def addArtwork(catalog, artwork):
 
     lt.addLast(catalog['Artwork'], artwork)
     
-    addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['ConstituentID'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
-    
-    artistName = addNameCostrituentID(catalog,artwork)
+    artistName = addNameConstituentID(catalog,artwork)
+
+    addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['Artists'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
+
     lt.addLast(catalog['Artwork'], artistName)
 
 def addArtistartwork(catalog, artist_id, artwork):
@@ -132,7 +134,7 @@ def addArtistartwork(catalog, artist_id, artwork):
                                 'DisplayName': artist['DisplayName']}
         lt.addLast(catalog['ArtworkArtist'], artist_artwork_dict)
 
-def addNameCostrituentID(catalog,artwork):
+def addNameConstituentID(catalog,artwork):
     """
     A medida que se lee el archivo, se van extrayendo los artists_id para poder crear una lista que relacione 
     a los artistas con sus obras de arte.
@@ -141,6 +143,8 @@ def addNameCostrituentID(catalog,artwork):
 
     for id in artist_id:
         addArtworkArtist(catalog, id, artwork)
+
+    
 
 def addArtworkArtist(catalog, artist_id, artwork):
     """
@@ -151,11 +155,9 @@ def addArtworkArtist(catalog, artist_id, artwork):
 
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
-    
         lt.addLast(artist['Artworks'], artwork)
+        lt.addLast(artwork['Artists'], artist['DisplayName'])
 
-
-    
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
     
@@ -323,7 +325,7 @@ def getTransportationCost(catalog, dpto):
 
     for artwork in lt.iterator(artworksBydpto):
         artwork_filtrada = {'Title': artwork['Title'],
-                            'Artist/s':artwork['ConstituentID'],
+                            'Artist/s':artwork['Artists'],
                             'Classification': artwork['Classification'],
                             'Date':artwork['Date'],
                             'Medium':artwork['Medium'],
