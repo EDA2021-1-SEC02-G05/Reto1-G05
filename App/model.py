@@ -138,20 +138,8 @@ def addArtworkArtist(catalog, artist_id, artwork):
 
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
-    else:
-        artist = newArtist(artist_id)
-        lt.addLast(artists, artist)
-    lt.addLast(artist['Artworks'], artwork)
-    lt.addLast(artwork['Artists'], artist['DisplayName'])
-
-def newArtist(artist_id):
-
-    artist = {'Artist':'',
-              'Artworks':None
-            }
-    artist['Artist']= artist_id
-    artist['Artworks']= lt.newList('ARRAY_LIST')
-    return artist
+        lt.addLast(artist['Artworks'], artwork)
+        lt.addLast(artwork['Artists'], artist['DisplayName'])
 
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
