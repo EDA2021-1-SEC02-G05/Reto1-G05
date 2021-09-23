@@ -141,6 +141,7 @@ def addArtworkArtist(catalog, artist_id, artwork):
         lt.addLast(artist['Artworks'], artwork)
         lt.addLast(artwork['Artists'], artist['DisplayName'])
 
+
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
     
     if int(date) != 0 :
