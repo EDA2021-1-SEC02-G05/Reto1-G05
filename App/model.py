@@ -73,10 +73,10 @@ def addArtist(catalog,artists):
     con base en ese diccionario se crean otras listas útiles para resolver los requerimientos.
     """
 
-    artist = {'ConstituentID':artists['ConstituentID'],
-                    'DisplayName': (artists['DisplayName']).lower(),
-                    'Nationality':(artists['Nationality']).lower(),
-                    'Gender':(artists['Gender']).lower(),
+    artist = {'ConstituentID':(artists['ConstituentID']),
+                    'DisplayName': str(artists['DisplayName']).lower(),
+                    'Nationality':str(artists['Nationality']).lower().replace(" ",""),
+                    'Gender':str(artists['Gender']).lower(),
                     'BeginDate':artists['BeginDate'],
                     'EndDate':artists['EndDate'],
                     'Artworks':lt.newList('ARRAY_LIST')}
@@ -123,7 +123,7 @@ def addArtwork(catalog, artwork):
     a los artistas con sus obras de arte.
     """
 
-    artist_id = artwork['ConstituentID'].split(',')
+    artist_id = artwork['ConstituentID'].strip().replace(" ","").split(',')
 
     for id in artist_id:
         addArtworkArtist(catalog, id, artwork)   
@@ -138,7 +138,9 @@ def addArtworkArtist(catalog, artist_id, artwork):
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
         lt.addLast(artist['Artworks'], artwork)
-        lt.addLast(artwork['Artists'], artist['DisplayName'])
+       # lt.addLast(artwork['Artists'], artist['DisplayName'])
+    else:
+        print("")
 
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
@@ -156,6 +158,7 @@ def addArtworkDate(catalog, artwork, date, artist, medio, dimensions, creditline
         adate = newArtworkDate(artwork,date, artist, medio, dimensions, creditline)
 
         lt.addLast(catalog['ArtworkDate'],adate)
+
 
 # Funciones para creacion de datos
 
@@ -269,7 +272,7 @@ def getArtistNationality(catalog):
     for artist in lt.iterator(catalog['Artist']):
         
         nationality = artist['Nationality']   
-        if nationality == "" or nationality == "Nationality unknown":
+        if nationality == "" or nationality == "nationalityunknown":
             nationality = "Unknown"
     
         nation = lt.isPresent(nationality_artworks, nationality)
