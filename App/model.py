@@ -114,6 +114,7 @@ def addArtwork(catalog, artwork):
                     'Length': artwork['Length (cm)'],
                     'Width':artwork['Width (cm)']}
 
+
     lt.addLast(catalog['Artwork'], artwork)
 
     addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['Artists'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
@@ -133,6 +134,7 @@ def addArtworkArtist(catalog, artist_id, artwork):
     
     """
     artists = catalog['Artist']
+    
     posartist = lt.isPresent(artists, artist_id)
 
     if posartist > 0:
@@ -232,6 +234,7 @@ def getArtistTecnique(catalog,name):
 
     for artist in lt.iterator(catalog['Artist']):
         if name.lower() in artist['DisplayName'].lower():
+            print(artist)
             total_obras = lt.size(artist['Artworks'])
             for artwork in lt.iterator(artist['Artworks']):
                 medium = artwork['Medium']
