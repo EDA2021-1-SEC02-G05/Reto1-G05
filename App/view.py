@@ -105,9 +105,8 @@ def printArtworkDate(artworks,tiempo, año_inicial, año_final):
     
         print('Las primeras 3 obras de arte encontradas en el rango son: \n')
         for artwork in lt.iterator(first_3_artworks):
-            artist_list = [artwork["Artist"]['elements']]
-            #print(artwork)
-            print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["DateAcquired"] + ", Artista/s : " + artist_list + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
+            print(artwork)
+            #print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["DateAcquired"] + ", Artista/s : " + artwork["Artist"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
             
 
         print('\nLas últimas 3 obras de arte encontradas en el rango son: \n ')
@@ -177,15 +176,15 @@ def printTransportationCost(transportation,tiempo, costo_total, old, dpto, peso_
         top5_viejas = lt.subList(old, 1, 5 )
         print('\n Las 5 obras más antiguas a transportar son: \n')
         for artwork in lt.iterator(top5_viejas):
-            #print(artwork)
-            print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: "+  str(artwork['Artwork']["Artist/s"]["elements"]) + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"]) + '\n')
+            print(artwork)
+            #print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: "+  artwork['Artwork']["Artist/s"] + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"]) + '\n')
         
         top5_costosas = lt.subList(transportation, 1 , 5)
         print('\n Las 5 obras más costosas de transportar son: \n')
 
         for artwork in lt.iterator(top5_costosas):
-            #print(artwork)
-            print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: " + str(artwork['Artwork']["Artist/s"]["elements"])  + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"])+ '\n')
+            print(artwork)
+            #print("Titulo: " + artwork['Artwork']["Title"] + ", Artistas: " + artwork['Artwork']["Artist/s"] + ", Clasificación : " + artwork['Artwork']["Classification"] + ", Fecha: "+ artwork['Artwork']["Date"] + ", Medio: "+ artwork['Artwork']["Medium"] + ", Dimensiones: " + artwork['Artwork']["Dimensions"] + ", Costo de Transporte: " + str(artwork["Cost"])+ '\n')
         print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
     else: 
         print('No se encontraron obras para transportar de ese departamento')
