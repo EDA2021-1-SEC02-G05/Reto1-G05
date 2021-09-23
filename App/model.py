@@ -74,9 +74,9 @@ def addArtist(catalog,artists):
     """
 
     artist = {'ConstituentID':(artists['ConstituentID']),
-                    'DisplayName': str(artists['DisplayName']).lower(),
-                    'Nationality':str(artists['Nationality']).lower().replace(" ",""),
-                    'Gender':str(artists['Gender']).lower(),
+                    'DisplayName':(artists['DisplayName']).lower(),
+                    'Nationality':(artists['Nationality']).lower().replace(" ",""),
+                    'Gender':(artists['Gender']).lower(),
                     'BeginDate':artists['BeginDate'],
                     'EndDate':artists['EndDate'],
                     'Artworks':lt.newList('ARRAY_LIST')}
@@ -123,8 +123,9 @@ def addArtwork(catalog, artwork):
     a los artistas con sus obras de arte.
     """
 
-    artist_id = artwork['ConstituentID'].strip().replace(" ","").split(',')
-
+    #artist_id = artwork['ConstituentID'].strip().replace(" ","").split(',')
+    artist_id = artwork['ConstituentID'].replace(" ","").split(',')
+    
     for id in artist_id:
         addArtworkArtist(catalog, id, artwork)   
 
@@ -138,7 +139,7 @@ def addArtworkArtist(catalog, artist_id, artwork):
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
         lt.addLast(artist['Artworks'], artwork)
-       # lt.addLast(artwork['Artists'], artist['DisplayName'])
+        lt.addLast(artwork['Artists'], artist['DisplayName'])
     else:
         print("")
 
