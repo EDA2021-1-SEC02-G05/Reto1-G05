@@ -105,15 +105,15 @@ def printArtworkDate(artworks,tiempo, año_inicial, año_final):
     
         print('Las primeras 3 obras de arte encontradas en el rango son: \n')
         for artwork in lt.iterator(first_3_artworks):
-            artist_list = [artwork["Artist"]['elements']]
+            artist_list = str(artwork["Artist"]['elements'])
             #print(artwork)
             print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["DateAcquired"] + ", Artista/s : " + artist_list + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
             
 
         print('\nLas últimas 3 obras de arte encontradas en el rango son: \n ')
         for artwork in lt.iterator(last_3_artworks):
-            print(artwork)
-            #print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["DateAcquired"] + ", Artista/s : " + artwork["Artist"] + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
+            artist_list = str(artwork["Artist"]['elements'])
+            print("Titulo: " + artwork["Title"] + ", Año de adquisición: " + artwork["DateAcquired"] + ", Artista/s : " + artist_list + ", Medio: "+ artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
         
         print('El tiempo que tardó en ejecutarse el requerimiento es (mseg): ' + str(tiempo))
     else:
@@ -261,7 +261,7 @@ while True:
   
         
         nationalities = controller.getArtistNationality(catalog)
-        printArtworkBynationalities(nationalities[0],nationalities[1] )
+        printArtworkBynationalities(nationalities[0],nationalities[1])
         
 
     elif int(inputs[0]) == 6:
