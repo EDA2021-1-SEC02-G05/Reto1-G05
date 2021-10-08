@@ -44,17 +44,17 @@ def newCatalog(list_type = 'ARRAY_LIST'):
     todas las obras y artistas del museo, adicionalmente se crea una lista que relaciona las obras de arte con sus artistas y una lista
     que relaciona a los artistas con su fecha de nacimiento. Retorna el catalogo inicializado.
     """
-    catalog = {'Artist': None,
-               'Artwork': None,
+    catalog = {'Artwork': None,
+               'Artist': None,
                'ArtistDate':None,
                'ArtworkDate':None,
                'ArtworkArtist':lt.newList(list_type,
                                  cmpfunction=""),
                 }
 
+    catalog['Artwork'] = lt.newList(list_type)
     catalog['Artist'] = lt.newList(list_type,
                                     cmpfunction=cmpartistID)
-    catalog['Artwork'] = lt.newList(list_type, cmpfunction=cmpartworkID)
     catalog['ArtistDate'] = lt.newList(list_type,
                                  cmpfunction="")
 
@@ -81,9 +81,10 @@ def addArtist(catalog,artists):
                     'EndDate':artists['EndDate'],
                     'Artworks':lt.newList('ARRAY_LIST')}
 
+    addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
+
     lt.addLast(catalog['Artist'], artist) 
 
-    addArtistDate(catalog, artist['DisplayName'], artist['BeginDate'],artist['EndDate'],artist['Nationality'],artist['Gender'])
 
 
 def addArtwork(catalog, artwork):
@@ -96,7 +97,7 @@ def addArtwork(catalog, artwork):
 
     artwork = {'ObjectID':artwork['ObjectID'], 
                     'Title':(artwork['Title']).lower(), 
-                    'ConstituentID':artwork['ConstituentID'],
+                    'ConstituentID':artwork['ConstituentID'][1:-1],
                     'Artists':lt.newList('ARRAY_LIST'),
                     'Date': artwork[ 'Date'],
                     'Medium':(artwork['Medium']).lower(), 
@@ -113,7 +114,6 @@ def addArtwork(catalog, artwork):
                     'Length': artwork['Length (cm)'],
                     'Width':artwork['Width (cm)']}
 
-
     lt.addLast(catalog['Artwork'], artwork)
 
     addArtworkDate(catalog,artwork['Title'],artwork['DateAcquired'],artwork['Artists'], artwork['Medium'], artwork['Dimensions'] , artwork['CreditLine'])
@@ -123,6 +123,7 @@ def addArtwork(catalog, artwork):
     a los artistas con sus obras de arte.
     """
 
+    #artist_id = artwork['ConstituentID'].strip().replace(" ","").split(',')
     artist_id = artwork['ConstituentID'].replace(" ","").split(',')
     
     for id in artist_id:
@@ -133,13 +134,15 @@ def addArtworkArtist(catalog, artist_id, artwork):
     
     """
     artists = catalog['Artist']
-    
     posartist = lt.isPresent(artists, artist_id)
 
     if posartist > 0:
         artist = lt.getElement(artists, posartist)
         lt.addLast(artist['Artworks'], artwork)
         lt.addLast(artwork['Artists'], artist['DisplayName'])
+    else:
+        print("")
+
 
 def addArtistDate(catalog, artist, date, deathdate, nationality, gender):
     
@@ -483,18 +486,10 @@ def cmpartworkyear(artwork1,artwork2):
         return date_1 < date_2
 
 def cmpartistID(artistid1,artist):
-    if str(artistid1) in str(artist['ConstituentID']):
+    if (artistid1 in artist['ConstituentID']):
         return 0
     else:
         return -1
-
-def cmpartworkID(artworkid1,artworkid2):
-
-    if artworkid1['ObjectID'] == artworkid2['ObjectID']:
-        return 0
-    else:
-        return -1
-
 
 def cmpArtistTecnique(tec1, tec2):
 
